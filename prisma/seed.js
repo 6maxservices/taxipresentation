@@ -66,9 +66,9 @@ async function main() {
       ]),
       photos: {
         create: [
-          { url: '/photos/4c8caf05-1ae7-48d4-9ced-287b6f63df53.jfif', sortOrder: 1 },
-          { url: '/photos/7de10596-bd1c-42bf-9e88-a76f4cbc4389.jfif', sortOrder: 2 },
-          { url: '/photos/006d52d0-ece0-476f-ae91-622db308a6d3.jfif', sortOrder: 3 },
+          { url: '/photos/4c8caf05-1ae7-48d4-9ced-287b6f63df53.jpg', sortOrder: 1 },
+          { url: '/photos/7de10596-bd1c-42bf-9e88-a76f4cbc4389.jpg', sortOrder: 2 },
+          { url: '/photos/006d52d0-ece0-476f-ae91-622db308a6d3.jpg', sortOrder: 3 },
         ]
       }
     },
@@ -111,10 +111,10 @@ async function main() {
       ]),
       photos: {
         create: [
-          { url: '/photos/0b55f0ee-dce1-4e33-a9b3-39e6f9e1dbee.jfif', sortOrder: 1 },
-          { url: '/photos/6fd01cac-9d39-4a2a-b256-d6d9dce77acc.jfif', sortOrder: 2 },
-          { url: '/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jfif', sortOrder: 3 },
-          { url: '/photos/57972f52-f0e1-451d-8505-c330a99d73e6.jfif', sortOrder: 4 },
+          { url: '/photos/0b55f0ee-dce1-4e33-a9b3-39e6f9e1dbee.jpg', sortOrder: 1 },
+          { url: '/photos/6fd01cac-9d39-4a2a-b256-d6d9dce77acc.jpg', sortOrder: 2 },
+          { url: '/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jpg', sortOrder: 3 },
+          { url: '/photos/57972f52-f0e1-451d-8505-c330a99d73e6.jpg', sortOrder: 4 },
         ]
       }
     },
