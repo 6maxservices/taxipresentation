@@ -73,7 +73,7 @@ model Booking {
   transferId   String?
   transfer     Transfer? @relation(fields: [transferId], references: [id])
   preferredDate String  // Could be a range for multi-day
-  passengers   Int
+  passengers   String
   notes        String?
   referralSource String?
   status       String   @default("NEW") // NEW, CONTACTED, CONFIRMED, COMPLETED, REVIEW_SENT, CANCELLED

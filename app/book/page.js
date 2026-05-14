@@ -10,6 +10,7 @@ function BookingForm() {
   
   const [serviceType, setServiceType] = useState(preselectedType);
   const [products, setProducts] = useState({ tours: [], transfers: [] });
+  const [customPassengers, setCustomPassengers] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -45,7 +46,7 @@ function BookingForm() {
           clientEmail: data.email,
           clientPhone: data.phone,
           date: data.date,
-          passengers: data.passengers,
+          passengers: data.passengers === 'custom' ? data.passengersCustom : data.passengers,
           pickupLocation: data.pickup,
           dropoffLocation: data.dropoff,
           notes: `${data.product ? `Interested in: ${data.product}\n` : ''}${data.notes}`
@@ -132,13 +133,29 @@ function BookingForm() {
           <input type="date" id="date" name="date" required />
         </div>
         <div className="form-group">
-          <label htmlFor="passengers">Number of Passengers (Max 4)</label>
-          <select id="passengers" name="passengers" required>
+          <label htmlFor="passengers">Number of Passengers</label>
+          <select 
+            id="passengers" 
+            name="passengers" 
+            required 
+            onChange={(e) => setCustomPassengers(e.target.value === 'custom')}
+          >
             <option value="1">1 Person</option>
             <option value="2">2 Persons</option>
             <option value="3">3 Persons</option>
             <option value="4">4 Persons</option>
+            <option value="5">5 Persons</option>
+            <option value="custom">More / Custom</option>
           </select>
+          {customPassengers && (
+            <input 
+              type="text" 
+              name="passengersCustom" 
+              placeholder="How many people?" 
+              required 
+              style={{ marginTop: '10px' }} 
+            />
+          )}
         </div>
       </div>
 
