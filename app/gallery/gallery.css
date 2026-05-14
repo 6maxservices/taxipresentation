@@ -1,0 +1,41 @@
+.masonry-grid {
+  column-count: 1;
+  column-gap: var(--space-md);
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: var(--space-md);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.masonry-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.masonry-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .masonry-grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 900px) {
+  .masonry-grid {
+    column-count: 3;
+    column-gap: var(--space-lg);
+  }
+  
+  .masonry-item {
+    margin-bottom: var(--space-lg);
+  }
+}

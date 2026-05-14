@@ -1,0 +1,47 @@
+.floating-contact {
+  position: fixed;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  z-index: 900;
+}
+
+.contact-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  color: white;
+}
+
+.whatsapp-btn {
+  background-color: #25D366;
+}
+
+.viber-btn {
+  background-color: #7360F2;
+}
+
+@media (min-width: 768px) {
+  .floating-contact {
+    bottom: var(--space-lg);
+    right: var(--space-lg);
+  }
+  
+  .contact-btn {
+    width: 64px;
+    height: 64px;
+  }
+}

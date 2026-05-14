@@ -1,0 +1,263 @@
+.landing-page {
+  /* Landing page specific styles */
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 72px; /* offset header */
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+}
+
+.hero-img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-content {
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-title {
+  color: var(--color-white);
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+  text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-lg);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-weight: 300;
+}
+
+.btn-large {
+  padding: 0 var(--space-lg);
+  font-size: 1.125rem;
+  min-height: 56px;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 4.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.5rem;
+  }
+}
+
+/* Features Section */
+.features-section {
+  background-color: var(--color-white);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.feature-card h3 {
+  color: var(--color-azure-dark);
+  margin-bottom: var(--space-sm);
+}
+
+.feature-card p {
+  color: #495057;
+}
+
+@media (min-width: 768px) {
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+}
+
+/* Tours Section */
+.section-header {
+  margin-bottom: var(--space-xl);
+}
+
+.section-header p {
+  color: #6c757d;
+  font-size: 1.125rem;
+}
+
+.tours-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+.tour-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: inherit;
+}
+
+.tour-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  color: inherit;
+}
+
+.tour-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background-color: var(--color-stone);
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+.placeholder-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #adb5bd;
+}
+
+.tour-card-content {
+  padding: var(--space-md);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tour-card-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xs);
+}
+
+.tour-card-desc {
+  color: #495057;
+  font-size: 0.875rem;
+  margin-bottom: var(--space-md);
+  flex-grow: 1;
+}
+
+.tour-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-stone);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-azure-dark);
+}
+
+@media (min-width: 768px) {
+  .tours-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tours-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* About Section */
+.about-section {
+  background-color: var(--color-stone);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.george-placeholder {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background-color: var(--color-charcoal);
+  color: var(--color-stone);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .about-content {
+    padding-left: var(--space-xl);
+  }
+}
+
+/* CTA Section */
+.cta-section {
+  background-color: var(--color-azure-dark);
+  color: var(--color-white);
+}
+
+.cta-section h2 {
+  color: var(--color-white);
+}
+
+.cta-subtitle {
+  color: #e9ecef;
+  margin-bottom: var(--space-lg);
+  font-size: 1.25rem;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .cta-buttons {
+    flex-direction: row;
+  }
+}

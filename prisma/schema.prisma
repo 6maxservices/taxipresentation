@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  whatsapp     String?
+  createdAt    DateTime @default(now())
+}
+
+model Tour {
+  id           String      @id @default(cuid())
+  slug         String      @unique
+  title        String
+  category     String      // DAY_TOUR, MULTI_DAY, CUSTOM
+  shortDesc    String      // One-liner for cards
+  description  String      // Full description
+  highlights   String      // JSON array of stops/highlights
+  duration     String      // "8 hours" / "10-12 hours"
+  distance     String?     // "160km"
+  priceFrom    Float?      // Nullable — some tours are "quote only"
+  showPrice    Boolean     @default(true)
+  included     String      // JSON array
+  excluded     String      // JSON array
+  mapPoints    String?     // JSON for Leaflet route
+  isActive     Boolean     @default(true)
+  sortOrder    Int         @default(0)
+  photos       TourPhoto[]
+  bookings     Booking[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model TourPhoto {
+  id        String @id @default(cuid())
+  tourId    String
+  tour      Tour   @relation(fields: [tourId], references: [id])
+  url       String
+  caption   String?
+  sortOrder Int    @default(0)
+}
+
+model Transfer {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  fromArea    String
+  toArea      String
+  description String?
+  priceFrom   Float?
+  showPrice   Boolean   @default(true)
+  isActive    Boolean   @default(true)
+  sortOrder   Int       @default(0)
+  bookings    Booking[]
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  clientName   String
+  clientEmail  String
+  clientPhone  String
+  serviceType  String   // DAY_TOUR, TRANSFER, MULTI_DAY, CUSTOM
+  tourId       String?
+  tour         Tour?    @relation(fields: [tourId], references: [id])
+  transferId   String?
+  transfer     Transfer? @relation(fields: [transferId], references: [id])
+  preferredDate String  // Could be a range for multi-day
+  passengers   Int
+  notes        String?
+  referralSource String?
+  status       String   @default("NEW") // NEW, CONTACTED, CONFIRMED, COMPLETED, REVIEW_SENT, CANCELLED
+  adminNotes   String?  // George's private notes
+  reviewToken  String?  @unique // Generated when George marks as COMPLETED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model CalendarDay {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  status    String   @default("AVAILABLE") // AVAILABLE, BOOKED, BUSY
+  bookingId String?
+  note      String?
+}
+
+model GalleryAlbum {
+  id          String         @id @default(cuid())
+  title       String
+  slug        String         @unique
+  description String?
+  category    String?        // ATHENS, DELPHI, NAFPLION, etc.
+  isPublic    Boolean        @default(true) // For main gallery
+  isTrip      Boolean        @default(false) // For client trip albums
+  shareToken  String?        @unique // For shareable trip links
+  clientName  String?
+  bookingId   String?
+  photos      GalleryPhoto[]
+  createdAt   DateTime       @default(now())
+}
+
+model GalleryPhoto {
+  id        String       @id @default(cuid())
+  albumId   String
+  album     GalleryAlbum @relation(fields: [albumId], references: [id])
+  url       String
+  thumbnail String?
+  caption   String?
+  sortOrder Int          @default(0)
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  bookingId  String?
+  clientName String
+  tourTitle  String
+  rating     Int      // 1-5
+  text       String
+  isApproved Boolean  @default(false)
+  isFeatured Boolean  @default(false) // Show on landing page
+  token      String   @unique // Matches booking.reviewToken
+  createdAt  DateTime @default(now())
+}

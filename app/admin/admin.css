@@ -1,0 +1,120 @@
+.admin-wrapper {
+  padding-top: 72px; /* Offset the public header */
+  background-color: var(--color-stone);
+  min-height: 100vh;
+}
+
+.admin-nav-bar {
+  background-color: var(--color-white);
+  border-bottom: 1px solid #dee2e6;
+  position: sticky;
+  top: 72px;
+  z-index: 100;
+}
+
+.admin-nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto;
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+
+.admin-links {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.admin-link {
+  font-weight: 500;
+  color: #6c757d;
+  padding: var(--space-xs) 0;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-link.active {
+  color: var(--color-azure-dark);
+  border-bottom-color: var(--color-azure);
+}
+
+.btn-logout {
+  background: none;
+  border: none;
+  color: #d00000;
+  font-weight: 500;
+  cursor: pointer;
+  padding: var(--space-xs) var(--space-sm);
+  white-space: nowrap;
+}
+
+.admin-content {
+  padding: var(--space-xl) 0;
+}
+
+/* Common Admin UI Elements */
+.admin-card {
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: var(--space-lg);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: var(--space-md);
+}
+
+.admin-header {
+  margin-bottom: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-PENDING { background-color: #fff3cd; color: #856404; }
+.status-CONFIRMED { background-color: #d4edda; color: #155724; }
+.status-COMPLETED { background-color: #cce5ff; color: #004085; }
+.status-CANCELLED { background-color: #f8d7da; color: #721c24; }
+
+/* Admin Forms */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-charcoal);
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-azure);
+  box-shadow: 0 0 0 3px rgba(0, 119, 190, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+}

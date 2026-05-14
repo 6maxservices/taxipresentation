@@ -1,0 +1,121 @@
+.page-container {
+  padding-top: calc(72px + var(--space-xl));
+  padding-bottom: var(--space-xl);
+  min-height: 80vh;
+}
+
+.page-header {
+  margin-bottom: var(--space-xl);
+}
+
+.page-subtitle {
+  color: #495057;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.125rem;
+}
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: inherit;
+}
+
+.catalog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  color: inherit;
+}
+
+.catalog-card-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: var(--color-stone);
+}
+
+.catalog-card-content {
+  padding: var(--space-lg);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.catalog-card-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+  color: var(--color-azure-dark);
+}
+
+.catalog-card-desc {
+  color: #495057;
+  margin-bottom: var(--space-md);
+  flex-grow: 1;
+}
+
+.catalog-card-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-sm) 0;
+  border-top: 1px solid var(--color-stone);
+  border-bottom: 1px solid var(--color-stone);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6c757d;
+  margin-bottom: 2px;
+}
+
+.meta-value {
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.catalog-card-footer {
+  margin-top: auto;
+}
+
+@media (min-width: 768px) {
+  .catalog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .catalog-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.custom-tour-cta {
+  background-color: var(--color-parchment);
+  border: 1px dashed var(--color-charcoal);
+  border-radius: 8px;
+  padding: var(--space-xl);
+  margin-top: var(--space-xl);
+}
