@@ -1,24 +1,29 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(request) {
   try {
-    const [tours, transfers] = await Promise.all([
-      prisma.tour.findMany({
-        where: { isActive: true },
-        select: { id: true, title: true, slug: true },
-        orderBy: { sortOrder: 'asc' }
-      }),
-      prisma.prismaTransfer.findMany({
-        where: { isActive: true },
-        select: { id: true, title: true, slug: true },
-        orderBy: { sortOrder: 'asc' }
-      })
-    ]);
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get('type'); // 'DAY_TOUR' or 'TRANSFER'
 
-    return NextResponse.json({ tours, transfers });
+    let data = [];
+    if (type === 'DAY_TOUR') {
+      data = await prisma.tour.findMany({
+        where: { isActive: true },
+        select: { id: true, title: true, slug: true },
+        orderBy: { sortOrder: 'asc' }
+      });
+    } else {
+      data = await prisma.transfer.findMany({
+        where: { isActive: true },
+        select: { id: true, title: true, slug: true },
+        orderBy: { sortOrder: 'asc' }
+      });
+    }
+
+    return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Failed to fetch products' }, { status: 500 });
   }
 }
