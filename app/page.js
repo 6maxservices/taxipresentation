@@ -20,7 +20,7 @@ export default async function Home() {
       <section className="hero">
         <div className="hero-mosaic">
           <div className="mosaic-item item-1">
-            <Image src="/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jpg" alt="Greece Landmark" fill priority className="object-cover" />
+            <Image src="/photos/4c8caf05-1ae7-48d4-9ced-287b6f63df53.jpg" alt="The Acropolis of Athens" fill priority className="object-cover" />
           </div>
           <div className="mosaic-item item-2">
             <Image src="/photos/0b55f0ee-dce1-4e33-a9b3-39e6f9e1dbee.jpg" alt="Greece Landmark" fill priority className="object-cover" />
@@ -29,7 +29,7 @@ export default async function Home() {
             <Image src="/photos/6fd01cac-9d39-4a2a-b256-d6d9dce77acc.jpg" alt="Greece Landmark" fill priority className="object-cover" />
           </div>
           <div className="mosaic-item item-4">
-            <Image src="/photos/4c8caf05-1ae7-48d4-9ced-287b6f63df53.jpg" alt="Greece Landmark" fill priority className="object-cover" />
+            <Image src="/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jpg" alt="Greece Landmark" fill priority className="object-cover" />
           </div>
           <div className="mosaic-item item-5">
             <Image src="/photos/7de10596-bd1c-42bf-9e88-a76f4cbc4389.jpg" alt="Greece Landmark" fill priority className="object-cover" />
@@ -107,9 +107,13 @@ export default async function Home() {
       <section className="about-section editorial-section">
         <div className="container about-grid">
           <div className="about-image-wrapper">
-            {/* Using a placeholder for George's photo until provided */}
-            <div className="george-placeholder">
-              <span className="font-serif italic">"I drive the miles, you make the memories."</span>
+            <div className="george-image">
+              <Image 
+                src="/photos/george/george.jpg" 
+                alt="George - Your Private Driver in Greece"
+                fill
+                className="object-cover rounded-lg shadow-xl"
+              />
             </div>
           </div>
           <div className="about-content">
