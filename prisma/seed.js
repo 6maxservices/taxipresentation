@@ -123,6 +123,31 @@ async function main() {
     },
   })
 
+  // Create Transfers
+  await prisma.transfer.upsert({
+    where: { slug: 'airport-to-center' },
+    update: {},
+    create: {
+      slug: 'airport-to-center',
+      title: 'Athens Airport to Athens Center',
+      fromArea: 'Athens Airport (ATH)',
+      toArea: 'Athens Center / Hotel',
+      priceFrom: 45,
+    },
+  })
+
+  await prisma.transfer.upsert({
+    where: { slug: 'airport-to-piraeus' },
+    update: {},
+    create: {
+      slug: 'airport-to-piraeus',
+      title: 'Athens Airport to Piraeus Port',
+      fromArea: 'Athens Airport (ATH)',
+      toArea: 'Piraeus Port',
+      priceFrom: 55,
+    },
+  })
+
   console.log('Database seeded!')
 }
 
