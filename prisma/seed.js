@@ -1,22 +1,8 @@
 require('dotenv').config()
 const { PrismaClient } = require('@prisma/client')
-const { PrismaLibSql } = require('@prisma/adapter-libsql')
-const { createClient } = require('@libsql/client')
 const bcrypt = require('bcryptjs')
 
-const getPrisma = () => {
-  if (process.env.TURSO_DATABASE_URL && process.env.TURSO_AUTH_TOKEN) {
-    const libsql = createClient({
-      url: process.env.TURSO_DATABASE_URL,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
-    const adapter = new PrismaLibSql(libsql);
-    return new PrismaClient({ adapter });
-  }
-  return new PrismaClient();
-}
-
-const prisma = getPrisma()
+const prisma = new PrismaClient()
 
 async function main() {
   console.log('Seeding database...')
