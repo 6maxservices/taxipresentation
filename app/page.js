@@ -18,14 +18,23 @@ export default async function Home() {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="hero">
-        <div className="hero-bg">
-          <Image 
-            src="/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jfif"
-            alt="Scenic view of Greece"
-            fill
-            priority
-            className="hero-img"
-          />
+        <div className="hero-mosaic">
+          <div className="mosaic-item item-1">
+            <Image src="/photos/1ea2cb4d-feb7-4581-a516-b9dcdd423211.jfif" alt="Greece Landmark" fill priority className="object-cover" />
+          </div>
+          <div className="mosaic-item item-2">
+            <Image src="/photos/0b55f0ee-dce1-4e33-a9b3-39e6f9e1dbee.jfif" alt="Greece Landmark" fill priority className="object-cover" />
+          </div>
+          <div className="mosaic-item item-3">
+            <Image src="/photos/6fd01cac-9d39-4a2a-b256-d6d9dce77acc.jfif" alt="Greece Landmark" fill priority className="object-cover" />
+          </div>
+          <div className="mosaic-item item-4">
+            <Image src="/photos/4c8caf05-1ae7-48d4-9ced-287b6f63df53.jfif" alt="Greece Landmark" fill priority className="object-cover" />
+          </div>
+          <div className="mosaic-item item-5">
+            <Image src="/photos/7de10596-bd1c-42bf-9e88-a76f4cbc4389.jfif" alt="Greece Landmark" fill priority className="object-cover" />
+          </div>
+          <div className="hero-overlay"></div>
         </div>
         <div className="container hero-content text-center">
           <h1 className="hero-title">Experience Greece<br/>Beyond the Guidebook</h1>
