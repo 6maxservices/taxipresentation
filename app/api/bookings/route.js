@@ -19,7 +19,7 @@ export async function POST(req) {
         clientEmail: body.clientEmail,
         clientPhone: body.clientPhone,
         date: new Date(body.date),
-        passengers: parseInt(body.passengers, 10),
+        passengers: body.passengers,
         pickupLocation: body.pickupLocation || null,
         dropoffLocation: body.dropoffLocation || null,
         notes: body.notes || null,
