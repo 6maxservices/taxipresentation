@@ -1,3 +1,8 @@
+.book-page {
+  padding-top: 120px;
+  padding-bottom: var(--space-xl);
+}
+
 .booking-container {
   max-width: 600px;
   margin: 0 auto;
@@ -48,6 +53,52 @@ input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--color-azure-light);
   box-shadow: 0 0 0 3px rgba(82, 182, 154, 0.2);
+}
+
+/* Location Autocomplete Styles */
+.location-input-wrapper {
+  position: relative;
+}
+
+.location-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.location-results li {
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.9rem;
+}
+
+.location-results li:hover {
+  background-color: #f8f9fa;
+}
+
+.location-icon {
+  font-size: 1rem;
+}
+
+.location-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .form-submit {

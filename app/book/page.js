@@ -1,15 +1,31 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import LocationInput from './LocationInput';
 import './book.css';
 
 function BookingForm() {
   const searchParams = useSearchParams();
-  const preselectedType = searchParams.get('type') || 'tour'; // 'tour' or 'transfer' or 'custom'
+  const preselectedType = searchParams.get('type') || 'tour';
   
+  const [serviceType, setServiceType] = useState(preselectedType);
+  const [products, setProducts] = useState({ tours: [], transfers: [] });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+        if (data.tours) setProducts(data);
+      } catch (err) {
+        console.error('Failed to load products', err);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +48,7 @@ function BookingForm() {
           passengers: data.passengers,
           pickupLocation: data.pickup,
           dropoffLocation: data.dropoff,
-          notes: data.notes
+          notes: `${data.product ? `Interested in: ${data.product}\n` : ''}${data.notes}`
         }),
       });
 
@@ -62,14 +78,35 @@ function BookingForm() {
   return (
     <form className="booking-form" onSubmit={handleSubmit}>
       {error && <div className="form-error" style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
+      
       <div className="form-group">
         <label htmlFor="serviceType">What do you need?</label>
-        <select id="serviceType" name="serviceType" defaultValue={preselectedType} required>
+        <select 
+          id="serviceType" 
+          name="serviceType" 
+          value={serviceType} 
+          onChange={(e) => setServiceType(e.target.value)}
+          required
+        >
           <option value="tour">Private Tour</option>
           <option value="transfer">Transfer</option>
           <option value="custom">Custom Itinerary</option>
         </select>
       </div>
+
+      {(serviceType === 'tour' || serviceType === 'transfer') && (
+        <div className="form-group">
+          <label htmlFor="product">Which one are you interested in?</label>
+          <select id="product" name="product" required>
+            <option value="">Select a {serviceType}...</option>
+            {serviceType === 'tour' ? (
+              products.tours.map(t => <option key={t.id} value={t.title}>{t.title}</option>)
+            ) : (
+              products.transfers.map(t => <option key={t.id} value={t.title}>{t.title}</option>)
+            )}
+          </select>
+        </div>
+      )}
 
       <div className="form-row">
         <div className="form-group">
@@ -108,11 +145,11 @@ function BookingForm() {
       <div className="form-row">
         <div className="form-group">
           <label htmlFor="pickup">Pick-up Location</label>
-          <input type="text" id="pickup" name="pickup" placeholder="Hotel name, Airport (flight #), or Port" />
+          <LocationInput id="pickup" name="pickup" placeholder="Hotel name, Airport, or Port" required />
         </div>
         <div className="form-group">
           <label htmlFor="dropoff">Drop-off Location</label>
-          <input type="text" id="dropoff" name="dropoff" placeholder="Optional. If different from pick-up" />
+          <LocationInput id="dropoff" name="dropoff" placeholder="Destination address (optional)" />
         </div>
       </div>
 
@@ -122,7 +159,7 @@ function BookingForm() {
           id="notes" 
           name="notes" 
           rows="4" 
-          placeholder="Which tour are you interested in? Any special requests or requirements?"
+          placeholder="Any special requests or requirements?"
         ></textarea>
       </div>
 
