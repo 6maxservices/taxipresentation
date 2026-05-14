@@ -16,8 +16,9 @@ export const authOptions = {
           return null;
         }
 
+        const normalizedEmail = credentials.email.toLowerCase().trim();
         const admin = await prisma.admin.findUnique({
-          where: { email: credentials.email }
+          where: { email: normalizedEmail }
         });
 
         if (!admin) {
