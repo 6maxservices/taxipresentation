@@ -18,12 +18,12 @@ export async function POST(req) {
         clientName: body.clientName,
         clientEmail: body.clientEmail,
         clientPhone: body.clientPhone,
-        date: new Date(body.date),
+        date: body.date,
         passengers: body.passengers,
         pickupLocation: body.pickupLocation || null,
         dropoffLocation: body.dropoffLocation || null,
         notes: body.notes || null,
-        status: 'PENDING',
+        status: 'NEW',
       }
     });
 
