@@ -4,6 +4,8 @@ import TransferToggle from './TransferToggle';
 import DeleteButton from '../DeleteButton';
 import { deleteTransfer } from './actions';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Manage Transfers | Admin',
 };

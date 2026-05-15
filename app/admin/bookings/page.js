@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import BookingStatusSelector from './BookingStatusSelector';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "All Bookings | Admin Dashboard",
 };
