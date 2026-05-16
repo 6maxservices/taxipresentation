@@ -10,6 +10,7 @@ function BookingForm() {
   
   const [serviceType, setServiceType] = useState(preselectedType);
   const [products, setProducts] = useState({ tours: [], transfers: [] });
+  const [arrivalType, setArrivalType] = useState('hotel');
   const [customPassengers, setCustomPassengers] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -27,7 +28,7 @@ function BookingForm() {
     }
     fetchProducts();
   }, []);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -49,6 +50,14 @@ function BookingForm() {
           passengers: data.passengers === 'custom' ? data.passengersCustom : data.passengers,
           pickupLocation: data.pickup,
           dropoffLocation: data.dropoff,
+          
+          // Arrival Details
+          arrivalType: data.arrivalType,
+          flightNumber: data.flightNumber || null,
+          arrivalTime: data.arrivalTime || null,
+          portName: data.portName || null,
+          portGate: data.portGate || null,
+          
           notes: `${data.product ? `Interested in: ${data.product}\n` : ''}${data.notes}`
         }),
       });
@@ -159,10 +168,57 @@ function BookingForm() {
         </div>
       </div>
 
+      <div className="form-group">
+        <label htmlFor="arrivalType">Pick-up From</label>
+        <select 
+          id="arrivalType" 
+          name="arrivalType" 
+          value={arrivalType} 
+          onChange={(e) => setArrivalType(e.target.value)}
+          required
+        >
+          <option value="hotel">Hotel / Private Address</option>
+          <option value="airport">Airport (ATH)</option>
+          <option value="port">Port (Piraeus, Rafina, Lavrio)</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      {arrivalType === 'airport' && (
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="flightNumber">Flight Number</label>
+            <input type="text" id="flightNumber" name="flightNumber" placeholder="e.g. DL123" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="arrivalTime">Arrival Time</label>
+            <input type="time" id="arrivalTime" name="arrivalTime" required />
+          </div>
+        </div>
+      )}
+
+      {arrivalType === 'port' && (
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="portName">Ship Name / Port</label>
+            <input type="text" id="portName" name="portName" placeholder="e.g. Blue Star Delos" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="portGate">Gate / Arrival Time</label>
+            <input type="text" id="portGate" name="portGate" placeholder="e.g. Gate E1 / 08:30" required />
+          </div>
+        </div>
+      )}
+
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="pickup">Pick-up Location</label>
-          <LocationInput id="pickup" name="pickup" placeholder="Hotel name, Airport, or Port" required />
+          <label htmlFor="pickup">Pick-up Location Details</label>
+          <LocationInput 
+            id="pickup" 
+            name="pickup" 
+            placeholder={arrivalType === 'hotel' ? "Hotel name or address" : "Specific terminal or meeting point"} 
+            required 
+          />
         </div>
         <div className="form-group">
           <label htmlFor="dropoff">Drop-off Location</label>

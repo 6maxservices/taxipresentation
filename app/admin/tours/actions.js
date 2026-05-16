@@ -23,26 +23,56 @@ export async function toggleTourActive(tourId, currentStatus) {
 
 export async function saveTour(data) {
   try {
-    const { id, ...payload } = data;
+    const { id, photos, ...payload } = data;
     
+    let result;
     if (id) {
       // Update existing
-      await prisma.tour.update({
-        where: { id },
-        data: payload
+      result = await prisma.$transaction(async (tx) => {
+        // Update tour data
+        const tour = await tx.tour.update({
+          where: { id },
+          data: payload
+        });
+
+        // Delete old photos
+        await tx.tourPhoto.deleteMany({ where: { tourId: id } });
+
+        // Create new photos
+        if (photos && photos.length > 0) {
+          await tx.tourPhoto.createMany({
+            data: photos.map(p => ({
+              tourId: id,
+              url: p.url,
+              type: p.type || 'GALLERY',
+              sortOrder: p.sortOrder || 0
+            }))
+          });
+        }
+        return tour;
       });
     } else {
       // Create new
-      await prisma.tour.create({
-        data: payload
+      result = await prisma.tour.create({
+        data: {
+          ...payload,
+          photos: {
+            create: (photos || []).map(p => ({
+              url: p.url,
+              type: p.type || 'GALLERY',
+              sortOrder: p.sortOrder || 0
+            }))
+          }
+        }
       });
     }
 
     revalidatePath('/admin/tours');
     revalidatePath('/tours');
+    revalidatePath(`/tours/${payload.slug}`);
     revalidatePath('/');
     
-    return { success: true };
+    return { success: true, id: result.id };
   } catch (error) {
     console.error('Failed to save tour:', error);
     return { error: error.message || 'Failed to save tour' };

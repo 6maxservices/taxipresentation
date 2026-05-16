@@ -78,6 +78,7 @@
   text-transform: uppercase;
 }
 
+.status-NEW { background-color: #fff3cd; color: #856404; }
 .status-PENDING { background-color: #fff3cd; color: #856404; }
 .status-CONFIRMED { background-color: #d4edda; color: #155724; }
 .status-COMPLETED { background-color: #cce5ff; color: #004085; }

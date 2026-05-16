@@ -34,6 +34,10 @@
   background-color: #7360F2;
 }
 
+.imessage-btn {
+  background-color: #007AFF;
+}
+
 @media (min-width: 768px) {
   .floating-contact {
     bottom: var(--space-lg);

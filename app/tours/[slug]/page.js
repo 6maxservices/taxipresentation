@@ -41,13 +41,21 @@ export default async function TourDetail({ params }) {
   }
 
   return (
-    <div className="tour-detail-page">
-      {/* Tour Hero */}
+    <>
+      {/* Tour Hero & Top Mosaic */}
       <section className="tour-hero">
         <div className="tour-hero-bg">
-          {tour.photos && tour.photos.length > 0 && (
+          {tour.photos.filter(p => p.type === 'MOSAIC').length > 0 ? (
+            <div className={`tour-mosaic grid-${Math.min(tour.photos.filter(p => p.type === 'MOSAIC').length, 6)}`}>
+              {tour.photos.filter(p => p.type === 'MOSAIC').slice(0, 6).map((p, i) => (
+                <div key={i} className={`mosaic-img item-${i + 1}`}>
+                  <Image src={p.url} alt={tour.title} fill className="object-cover" />
+                </div>
+              ))}
+            </div>
+          ) : (
             <Image 
-              src={tour.photos[0].url}
+              src={tour.photos.find(p => p.type === 'MAIN')?.url || tour.photos[0]?.url || '/placeholder.jpg'}
               alt={tour.title}
               fill
               priority
@@ -89,17 +97,17 @@ export default async function TourDetail({ params }) {
               </ul>
             </div>
             
-            {tour.photos && tour.photos.length > 1 && (
+            {tour.photos.filter(p => p.type === 'GALLERY').length > 0 && (
               <div className="tour-gallery">
-                <h2 className="font-serif">Gallery</h2>
-                <div className="tour-gallery-grid">
-                  {tour.photos.slice(1).map((photo, i) => (
-                    <div key={photo.id} className="tour-gallery-img">
+                <h2 className="font-serif">Photo Gallery</h2>
+                <div className="tour-gallery-scroll">
+                  {tour.photos.filter(p => p.type === 'GALLERY').map((photo, i) => (
+                    <div key={photo.id} className="gallery-item">
                       <Image 
                         src={photo.url}
-                        alt={`${tour.title} photo ${i + 1}`}
+                        alt={`${tour.title} gallery ${i + 1}`}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded"
                       />
                     </div>
                   ))}
@@ -147,6 +155,6 @@ export default async function TourDetail({ params }) {
           
         </div>
       </section>
-    </div>
+    </>
   );
 }

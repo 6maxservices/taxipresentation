@@ -21,8 +21,17 @@ export default function AdminLayout({ children }) {
             <Link href="/admin/tours" className={`admin-link ${pathname.startsWith('/admin/tours') ? 'active' : ''}`}>
               Tours
             </Link>
+            <Link href="/admin/mosaic" className={`admin-link ${pathname.startsWith('/admin/mosaic') ? 'active' : ''}`}>
+              Mosaic
+            </Link>
+            <Link href="/admin/gallery" className={`admin-link ${pathname.startsWith('/admin/gallery') ? 'active' : ''}`}>
+              Gallery
+            </Link>
             <Link href="/admin/transfers" className={`admin-link ${pathname.startsWith('/admin/transfers') ? 'active' : ''}`}>
               Transfers
+            </Link>
+            <Link href="/admin/settings" className={`admin-link ${pathname.startsWith('/admin/settings') ? 'active' : ''}`}>
+              Settings
             </Link>
           </div>
           <button onClick={() => signOut({ callbackUrl: '/' })} className="btn-logout">

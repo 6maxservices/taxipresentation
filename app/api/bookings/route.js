@@ -22,6 +22,14 @@ export async function POST(req) {
         passengers: body.passengers,
         pickupLocation: body.pickupLocation || null,
         dropoffLocation: body.dropoffLocation || null,
+        
+        // Arrival Details
+        arrivalType: body.arrivalType || null,
+        flightNumber: body.flightNumber || null,
+        arrivalTime: body.arrivalTime || null,
+        portName: body.portName || null,
+        portGate: body.portGate || null,
+        
         notes: body.notes || null,
         status: 'NEW',
       }

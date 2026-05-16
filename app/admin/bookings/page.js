@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import BookingStatusSelector from './BookingStatusSelector';
+import SendOfferForm from './SendOfferForm';
+import { Plane, Ship, MapPin } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,17 +56,40 @@ export default async function AdminBookings() {
                     <div><strong>Date:</strong> {new Date(booking.date).toLocaleDateString()}</div>
                     <div><strong>Passengers:</strong> {booking.passengers}</div>
                   </div>
+                  
+                  {/* Arrival Specific Details */}
+                  {booking.arrivalType && (
+                    <div style={{ padding: '8px', backgroundColor: '#e9ecef', borderRadius: '4px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {booking.arrivalType === 'AIRPORT' ? <Plane size={16} /> : <Ship size={16} />}
+                      <span>
+                        <strong>{booking.arrivalType}:</strong> {booking.flightNumber || booking.portName} 
+                        {booking.arrivalTime && ` @ ${booking.arrivalTime}`}
+                        {booking.portGate && ` (Gate: ${booking.portGate})`}
+                      </span>
+                    </div>
+                  )}
+
                   {(booking.pickupLocation || booking.dropoffLocation) && (
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-sm)', marginBottom: 'var(--space-xs)' }}>
                       <div><strong>Pick-up:</strong> {booking.pickupLocation || '-'}</div>
                       <div><strong>Drop-off:</strong> {booking.dropoffLocation || '-'}</div>
                     </div>
                   )}
+                  
                   {booking.notes && (
                     <div style={{ marginTop: 'var(--space-xs)' }}>
                       <strong>Notes:</strong> {booking.notes}
                     </div>
                   )}
+                  {booking.adminNotes && (
+                    <div style={{ marginTop: 'var(--space-xs)', color: 'var(--color-azure-dark)', fontStyle: 'italic' }}>
+                      <strong>Admin Note:</strong> {booking.adminNotes}
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ marginTop: 'var(--space-sm)' }}>
+                  <SendOfferForm booking={booking} />
                 </div>
 
               </div>

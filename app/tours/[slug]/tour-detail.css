@@ -144,37 +144,80 @@
   }
 }
 
-/* Gallery */
+/* Mosaic Hero */
+.tour-mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+}
+
+.mosaic-img { position: relative; width: 100%; height: 100%; overflow: hidden; }
+
+/* Dynamic grid layouts based on count */
+.grid-1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.grid-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+.grid-3 { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+.grid-3 .item-1 { grid-row: span 2; }
+.grid-4 { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.grid-4 .item-1 { grid-row: span 2; }
+.grid-5 { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.grid-5 .item-1 { grid-row: span 2; }
+.grid-6 { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.grid-6 .item-1 { grid-row: span 2; }
+.grid-6 .item-2 { grid-column: span 1; }
+
+@media (max-width: 767px) {
+  .tour-mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 150px);
+  }
+  .grid-3, .grid-4, .grid-5, .grid-6 { grid-template-columns: repeat(2, 1fr); }
+  .item-1 { grid-column: span 2; grid-row: span 1 !important; }
+}
+
+/* Gallery Scroll */
 .tour-gallery {
   margin-top: var(--space-xl);
   padding-top: var(--space-xl);
   border-top: 1px solid var(--color-stone);
 }
 
-.tour-gallery h2 {
-  margin-bottom: var(--space-md);
+.tour-gallery-scroll {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  padding-bottom: var(--space-md);
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
-.tour-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-sm);
+.tour-gallery-scroll::-webkit-scrollbar {
+  height: 6px;
 }
 
-.tour-gallery-img {
+.tour-gallery-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.tour-gallery-scroll::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.gallery-item {
+  flex: 0 0 280px;
+  aspect-ratio: 4/3;
   position: relative;
-  width: 100%;
-  aspect-ratio: 1/1;
-  background-color: var(--color-stone);
-  border-radius: 4px;
-  overflow: hidden;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .tour-gallery-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-  }
+.gallery-item:hover {
+  transform: translateY(-4px);
 }
 
 /* Sidebar / Booking Card */

@@ -9,7 +9,6 @@ export async function updateBookingStatus(bookingId, newStatus) {
       data: { status: newStatus },
     });
     
-    // Revalidate the bookings list page and dashboard
     revalidatePath('/admin/bookings');
     revalidatePath('/admin');
     

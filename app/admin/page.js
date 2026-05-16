@@ -8,7 +8,7 @@ export const metadata = {
 export default async function AdminDashboard() {
   // Fetch pending bookings
   const pendingBookings = await prisma.booking.findMany({
-    where: { status: 'PENDING' },
+    where: { status: 'NEW' },
     orderBy: { createdAt: 'desc' },
     take: 5,
   });
