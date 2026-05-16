@@ -24,7 +24,9 @@ export default async function Footer() {
     <footer className="footer">
       <div className="container footer-container">
         <div className="footer-brand">
-          <h2 className="font-serif">Discover Greece<br/>with George.</h2>
+          <Link href="/">
+            <img src="/logos/logo_option_1.png" alt="George Papatheodorou Taxi Transfer & Tours" style={{ height: '80px', width: 'auto', marginBottom: '1rem', filter: 'brightness(0) invert(1)' }} />
+          </Link>
           <p>Premium private tours and transfers in Athens and beyond.</p>
           
           <div className="social-icons" style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
@@ -57,19 +59,21 @@ export default async function Footer() {
             <ul>
               <li><Link href="/tours">Tours</Link></li>
               <li><Link href="/transfers">Transfers</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
             </ul>
           </div>
           <div>
             <h3>Explore</h3>
             <ul>
               <li><Link href="/gallery">Gallery</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/book">Book Now</Link></li>
             </ul>
           </div>
         </div>
       </div>
       <div className="footer-bottom container">
-        <p>&copy; {new Date().getFullYear()} George Tours. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} George’s Papatheodorou Taxi Transfer & Tours. All rights reserved.</p>
         <div className="admin-link">
           <Link href="/admin">Admin Login</Link>
         </div>

@@ -10,8 +10,8 @@ export default function Header() {
   return (
     <header className="header">
       <div className="container header-container">
-        <Link href="/" className="logo font-serif">
-          George.
+        <Link href="/" className="logo">
+          <img src="/logos/logo_option_1.png" alt="George Papatheodorou Taxi Transfer & Tours" style={{ height: '60px', width: 'auto' }} />
         </Link>
         
         <button className="mobile-menu-btn" onClick={() => setIsOpen(!isOpen)}>
@@ -22,6 +22,8 @@ export default function Header() {
           <Link href="/tours" onClick={() => setIsOpen(false)}>Tours</Link>
           <Link href="/transfers" onClick={() => setIsOpen(false)}>Transfers</Link>
           <Link href="/gallery" onClick={() => setIsOpen(false)}>Gallery</Link>
+          <Link href="/faq" onClick={() => setIsOpen(false)}>FAQ</Link>
+          <Link href="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
           <Link href="/book" className="btn btn-primary nav-cta" onClick={() => setIsOpen(false)}>
             Book Now
           </Link>

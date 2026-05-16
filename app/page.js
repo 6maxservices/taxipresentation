@@ -51,7 +51,7 @@ export default async function Home() {
         </div>
         <div className="container hero-content text-center">
           <h1 className="hero-title">Experience Greece<br/>Beyond the Guidebook</h1>
-          <p className="hero-subtitle">Premium private tours and transfers. Personal service. No upfront payments.</p>
+          <p className="hero-subtitle">George’s Papatheodorou Taxi Transfer & Tours. Premium private service. No upfront payments.</p>
           <Link href="/book" className="btn btn-primary btn-large">Request a Tour</Link>
         </div>
       </section>

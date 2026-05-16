@@ -30,6 +30,9 @@ export default function AdminLayout({ children }) {
             <Link href="/admin/photos" className={`admin-link ${pathname.startsWith('/admin/photos') ? 'active' : ''}`}>
               Media Library
             </Link>
+            <Link href="/admin/faq" className={`admin-link ${pathname.startsWith('/admin/faq') ? 'active' : ''}`}>
+              FAQ
+            </Link>
             <Link href="/admin/transfers" className={`admin-link ${pathname.startsWith('/admin/transfers') ? 'active' : ''}`}>
               Transfers
             </Link>
