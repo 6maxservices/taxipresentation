@@ -27,6 +27,7 @@ export default function SendOfferForm({ booking }) {
       // 1. Update status to CONTACTED locally
       const result = await updateBookingStatus(booking.id, 'CONTACTED');
       
+      if (result.success) {
         // 2. Log the action
         await logBookingAction(
           booking.id, 
