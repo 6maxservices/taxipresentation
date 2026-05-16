@@ -13,8 +13,28 @@ function ContactForm() {
     if (preselectedService) setService(preselectedService);
   }, [preselectedService]);
 
+  const isSuccess = searchParams.get('success') === 'true';
+  const hasError = searchParams.get('error');
+
+  if (isSuccess) {
+    return (
+      <div className="contact-success" style={{ textAlign: 'center', padding: '2rem 1rem' }}>
+        <h3 style={{ color: 'var(--color-azure-dark)', marginBottom: '1rem' }}>Message Sent!</h3>
+        <p>Thank you for reaching out. We will get back to you as soon as possible.</p>
+        <button onClick={() => window.history.replaceState({}, '', '/contact')} className="btn btn-outline" style={{ marginTop: '1rem' }}>
+          Send another message
+        </button>
+      </div>
+    );
+  }
+
   return (
     <form action="/api/contact" method="POST">
+      {hasError && (
+        <div style={{ color: 'red', marginBottom: '1rem', textAlign: 'center' }}>
+          Something went wrong. Please try again.
+        </div>
+      )}
       <div className="form-group">
         <label>Full Name</label>
         <input name="name" required placeholder="Your name" />
@@ -40,7 +60,7 @@ function ContactForm() {
         <label>Your Message</label>
         <textarea name="message" required rows="5" placeholder="How can we help you?"></textarea>
       </div>
-      <button type="submit" className="btn btn-primary w-full">Send Message</button>
+      <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Send Message</button>
     </form>
   );
 }
