@@ -9,8 +9,16 @@ export const metadata = {
   title: "All Bookings | Admin Dashboard",
 };
 
-export default async function AdminBookings() {
+export default async function AdminBookings({ searchParams }) {
+  // Await searchParams in Next.js 15+ (if applicable) or use them directly in older versions.
+  // Next.js 15 recommends awaiting searchParams. Assuming 14/15 compatibility pattern:
+  const params = await searchParams;
+  const statusFilter = params?.status || 'ALL';
+
+  const whereClause = statusFilter !== 'ALL' ? { status: statusFilter } : {};
+
   const bookings = await prisma.booking.findMany({
+    where: whereClause,
     include: {
       logs: {
         orderBy: { createdAt: 'desc' }
@@ -19,10 +27,33 @@ export default async function AdminBookings() {
     orderBy: { createdAt: 'desc' },
   });
 
+  const statuses = [
+    { label: 'All', value: 'ALL' },
+    { label: 'New / Pending', value: 'NEW' },
+    { label: 'Contacted', value: 'CONTACTED' },
+    { label: 'Confirmed', value: 'CONFIRMED' },
+    { label: 'Completed', value: 'COMPLETED' },
+    { label: 'Cancelled', value: 'CANCELLED' }
+  ];
+
   return (
     <div className="container">
-      <div className="admin-header">
-        <h1 className="font-serif">All Bookings</h1>
+      <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <h1 className="font-serif">Bookings & Quotes</h1>
+        
+        {/* Status Filters */}
+        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
+          {statuses.map(s => (
+            <a 
+              key={s.value}
+              href={`/admin/bookings${s.value === 'ALL' ? '' : `?status=${s.value}`}`}
+              className={`btn ${statusFilter === s.value ? 'btn-primary' : 'btn-outline'}`}
+              style={{ padding: '4px 12px', fontSize: '0.875rem', whiteSpace: 'nowrap' }}
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
       </div>
 
       <div className="admin-card">
