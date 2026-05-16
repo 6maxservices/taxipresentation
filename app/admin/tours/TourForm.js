@@ -24,25 +24,34 @@ export default function TourForm({ tour = null }) {
   }, []);
 
   const handleUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
 
-    const formData = new FormData();
-    formData.append('file', file);
+    setLoading(true);
+    const uploaded = [];
 
-    try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      if (data.success) {
-        setAllPhotos([data, ...allPhotos]);
-        addPhoto(data.url);
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          uploaded.push(data);
+          addPhoto(data.url);
+        }
+      } catch (err) {
+        console.error('Upload failed for', file.name, err);
       }
-    } catch (err) {
-      console.error('Upload failed', err);
     }
+
+    setAllPhotos(prev => [...uploaded, ...prev]);
+    setLoading(false);
+    e.target.value = '';
   };
 
   const addPhoto = (url) => {
@@ -270,7 +279,7 @@ export default function TourForm({ tour = null }) {
             <div style={{ marginBottom: '1rem' }}>
               <label className="btn btn-outline" style={{ display: 'inline-block', cursor: 'pointer' }}>
                 + Upload New Photo
-                <input type="file" onChange={handleUpload} style={{ display: 'none' }} accept="image/*" />
+                <input type="file" multiple onChange={handleUpload} style={{ display: 'none' }} accept="image/*" />
               </label>
             </div>
 
