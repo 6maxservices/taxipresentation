@@ -51,16 +51,10 @@ export default async function ToursPage() {
                     <span className="meta-label">Duration</span>
                     <span className="meta-value">{tour.duration}</span>
                   </div>
-                  {tour.showPrice && tour.priceFrom && (
-                    <div className="meta-item text-right">
-                      <span className="meta-label">From</span>
-                      <span className="meta-value">€{tour.priceFrom}</span>
-                    </div>
-                  )}
                 </div>
                 
                 <div className="catalog-card-footer">
-                  <span className="btn btn-outline" style={{ width: '100%' }}>View Details</span>
+                  <span className="btn btn-outline" style={{ width: '100%' }}>View Details & Quote</span>
                 </div>
               </div>
             </Link>

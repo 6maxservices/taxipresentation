@@ -7,8 +7,10 @@ import './book.css';
 function BookingForm() {
   const searchParams = useSearchParams();
   const preselectedType = searchParams.get('type') || 'tour';
+  const preselectedId = searchParams.get('id');
   
   const [serviceType, setServiceType] = useState(preselectedType);
+  const [selectedProduct, setSelectedProduct] = useState('');
   const [products, setProducts] = useState({ tours: [], transfers: [] });
   const [arrivalType, setArrivalType] = useState('hotel');
   const [customPassengers, setCustomPassengers] = useState(false);
@@ -21,13 +23,24 @@ function BookingForm() {
       try {
         const res = await fetch('/api/products');
         const data = await res.json();
-        if (data.tours) setProducts(data);
+        if (data.tours) {
+          setProducts(data);
+          
+          // Pre-select product if ID is provided
+          if (preselectedId) {
+            const list = preselectedType === 'tour' ? data.tours : data.transfers;
+            const item = list.find(t => t.id === preselectedId || t.slug === preselectedId);
+            if (item) {
+              setSelectedProduct(item.title);
+            }
+          }
+        }
       } catch (err) {
         console.error('Failed to load products', err);
       }
     }
     fetchProducts();
-  }, []);
+  }, [preselectedId, preselectedType]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,8 +91,8 @@ function BookingForm() {
   if (isSuccess) {
     return (
       <div className="booking-success text-center">
-        <h2 className="font-serif" style={{ color: 'var(--color-azure-dark)' }}>Request Sent!</h2>
-        <p>Thank you for reaching out. George will review your request and get back to you via email or WhatsApp within a few hours to confirm details and availability.</p>
+        <h2 className="font-serif" style={{ color: 'var(--color-azure-dark)' }}>Quote Request Sent!</h2>
+        <p>Thank you for reaching out. George will review your request and get back to you via email or WhatsApp within a few hours with a personalized quote.</p>
         <p className="italic" style={{ marginTop: 'var(--space-md)' }}>Remember: No deposit is required. You pay only after the service is completed.</p>
       </div>
     );
@@ -107,7 +120,13 @@ function BookingForm() {
       {(serviceType === 'tour' || serviceType === 'transfer') && (
         <div className="form-group">
           <label htmlFor="product">Which one are you interested in?</label>
-          <select id="product" name="product" required>
+          <select 
+            id="product" 
+            name="product" 
+            value={selectedProduct}
+            onChange={(e) => setSelectedProduct(e.target.value)}
+            required
+          >
             <option value="">Select a {serviceType}...</option>
             {serviceType === 'tour' ? (
               products.tours.map(t => <option key={t.id} value={t.title}>{t.title}</option>)
@@ -251,8 +270,8 @@ export default function BookPage() {
     <div className="book-page page-container">
       <div className="container">
         <header className="page-header text-center">
-          <h1 className="font-serif">Request a Booking</h1>
-          <p className="page-subtitle">Let's plan your journey. Fill out the form below and we'll get back to you promptly to confirm availability.</p>
+          <h1 className="font-serif">Request a Quote</h1>
+          <p className="page-subtitle">Let's plan your journey. Fill out the form below and we'll get back to you promptly with a personalized quote.</p>
         </header>
 
         <div className="booking-container">

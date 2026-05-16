@@ -1,5 +1,49 @@
-import { Phone, Mail, MessageSquare, Facebook, Instagram, Send } from 'lucide-react';
+'use client';
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { Phone, Mail, MessageSquare, Facebook, Instagram } from 'lucide-react';
 import './contact.css';
+
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const preselectedService = searchParams.get('service') || 'Day Tour';
+  const [service, setService] = useState(preselectedService);
+
+  useEffect(() => {
+    if (preselectedService) setService(preselectedService);
+  }, [preselectedService]);
+
+  return (
+    <form action="/api/contact" method="POST">
+      <div className="form-group">
+        <label>Full Name</label>
+        <input name="name" required placeholder="Your name" />
+      </div>
+      <div className="form-group">
+        <label>Email Address</label>
+        <input type="email" name="email" required placeholder="email@example.com" />
+      </div>
+      <div className="form-group">
+        <label>Service Interested In</label>
+        <select 
+          name="service" 
+          value={service} 
+          onChange={(e) => setService(e.target.value)}
+        >
+          <option>Day Tour</option>
+          <option>Airport/Port Transfer</option>
+          <option>Multi-day Trip</option>
+          <option>Custom Request</option>
+        </select>
+      </div>
+      <div className="form-group">
+        <label>Your Message</label>
+        <textarea name="message" required rows="5" placeholder="How can we help you?"></textarea>
+      </div>
+      <button type="submit" className="btn btn-primary w-full">Send Message</button>
+    </form>
+  );
+}
 
 export default function ContactPage() {
   return (
@@ -46,37 +90,16 @@ export default function ContactPage() {
             <div className="social-links">
               <a href="#" className="social-icon"><Facebook size={24} /></a>
               <a href="#" className="social-icon"><Instagram size={24} /></a>
-              <a href="#" className="social-icon"><Send size={24} /></a>
+              <a href="https://wa.me/306944466259" className="social-icon"><Phone size={24} /></a>
             </div>
           </div>
 
           <div className="contact-form-container">
             <div className="admin-card">
               <h2 className="font-serif">Quick Message</h2>
-              <form action="/api/contact" method="POST">
-                <div className="form-group">
-                  <label>Full Name</label>
-                  <input name="name" required placeholder="Your name" />
-                </div>
-                <div className="form-group">
-                  <label>Email Address</label>
-                  <input type="email" name="email" required placeholder="email@example.com" />
-                </div>
-                <div className="form-group">
-                  <label>Service Interested In</label>
-                  <select name="service">
-                    <option>Day Tour</option>
-                    <option>Airport/Port Transfer</option>
-                    <option>Multi-day Trip</option>
-                    <option>Custom Request</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Your Message</label>
-                  <textarea name="message" required rows="5" placeholder="How can we help you?"></textarea>
-                </div>
-                <button type="submit" className="btn btn-primary w-full">Send Message</button>
-              </form>
+              <Suspense fallback={<div>Loading form...</div>}>
+                <ContactForm />
+              </Suspense>
             </div>
           </div>
 

@@ -29,7 +29,7 @@ export default function Header() {
           <Link href="/faq" onClick={() => setIsOpen(false)}>FAQ</Link>
           <Link href="/contact" onClick={() => setIsOpen(false)}>Contact</Link>
           <Link href="/book" className="btn btn-primary nav-cta" onClick={() => setIsOpen(false)}>
-            Book Now
+            Request Quote
           </Link>
         </nav>
       </div>

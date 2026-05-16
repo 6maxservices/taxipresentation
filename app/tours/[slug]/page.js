@@ -5,9 +5,17 @@ import { prisma } from '@/lib/prisma';
 import { Clock, MapPin, CheckCircle, XCircle } from 'lucide-react';
 import './tour-detail.css';
 
+export const dynamic = 'force-dynamic';
+
 async function getTour(slug) {
-  const tour = await prisma.tour.findUnique({
-    where: { slug },
+  // Use findFirst with case-insensitive mode to be more robust
+  const tour = await prisma.tour.findFirst({
+    where: { 
+      slug: {
+        equals: slug.trim(),
+        mode: 'insensitive'
+      }
+    },
     include: { photos: { orderBy: { sortOrder: 'asc' } } },
   });
   
@@ -23,7 +31,14 @@ async function getTour(slug) {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const tour = await prisma.tour.findUnique({ where: { slug } });
+  const tour = await prisma.tour.findFirst({ 
+    where: { 
+      slug: {
+        equals: slug.trim(),
+        mode: 'insensitive'
+      }
+    } 
+  });
   if (!tour) return { title: 'Tour Not Found' };
   
   return {
@@ -118,20 +133,13 @@ export default async function TourDetail({ params }) {
 
           <aside className="tour-sidebar">
             <div className="booking-card">
-              <div className="price-box">
-                {tour.showPrice && tour.priceFrom ? (
-                  <>
-                    <span className="price-label">From</span>
-                    <span className="price-value">€{tour.priceFrom}</span>
-                    <span className="price-note">Per group (up to 4 persons)</span>
-                  </>
-                ) : (
-                  <span className="price-value">Price upon request</span>
-                )}
+              <div className="price-box" style={{ textAlign: 'center' }}>
+                <span className="price-value" style={{ fontSize: '1.5rem' }}>Price upon request</span>
+                <span className="price-note">Get a custom quote for your group</span>
               </div>
               
-              <Link href={`/book?tour=${tour.id}`} className="btn btn-primary book-btn">
-                Request to Book
+              <Link href={`/book?type=tour&id=${tour.id}`} className="btn btn-primary book-btn">
+                Request Quote
               </Link>
               <p className="no-deposit-note">No deposit required. Pay after the tour.</p>
               

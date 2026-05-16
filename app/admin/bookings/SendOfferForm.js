@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Mail, Loader2, Check } from 'lucide-react';
-import { updateBookingStatus } from './actions';
+import { updateBookingStatus, logBookingAction } from './actions';
 
 export default function SendOfferForm({ booking }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,10 +27,17 @@ export default function SendOfferForm({ booking }) {
       // 1. Update status to CONTACTED locally
       const result = await updateBookingStatus(booking.id, 'CONTACTED');
       
-      if (result.success) {
-        // 2. Open Gmail Compose
+        // 2. Log the action
+        await logBookingAction(
+          booking.id, 
+          'OFFER_SENT', 
+          `Sent offer of €${amount} via Gmail`
+        );
+
+        // 3. Open Gmail Compose
+        const signature = `\n\nBest regards,\nGeorge Papatheodorou\nTaxi Transfer & Tours Greece\nhttps://georgeathenstaxi.gr`;
         const subject = encodeURIComponent(`Offer for your trip in Greece - George Papatheodorou`);
-        const body = encodeURIComponent(message);
+        const body = encodeURIComponent(message + signature);
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${booking.clientEmail}&su=${subject}&body=${body}`;
         
         window.open(gmailUrl, '_blank');
@@ -39,6 +46,7 @@ export default function SendOfferForm({ booking }) {
         setTimeout(() => {
           setIsOpen(false);
           setIsSent(false);
+          window.location.reload(); // Refresh to show logs
         }, 3000);
       } else {
         setError(result.error || 'Failed to update booking status');

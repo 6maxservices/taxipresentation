@@ -25,6 +25,10 @@ export async function saveTour(data) {
   try {
     const { id, photos, ...payload } = data;
     
+    // Trim string fields to avoid 404s from trailing spaces
+    if (payload.slug) payload.slug = payload.slug.trim();
+    if (payload.title) payload.title = payload.title.trim();
+    
     let result;
     if (id) {
       // Update existing

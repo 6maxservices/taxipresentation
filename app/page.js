@@ -70,7 +70,7 @@ export default async function Home() {
             </div>
             <div className="feature-card text-center">
               <h3 className="font-serif">Private & Personalized</h3>
-              <p>Your pace, your interests. 1-4 passengers in premium comfort, exploring at your own rhythm.</p>
+              <p>Your pace, your interests. All group sizes welcome in premium comfort, exploring at your own rhythm.</p>
             </div>
           </div>
         </div>
@@ -104,7 +104,6 @@ export default async function Home() {
                   <p className="tour-card-desc">{tour.shortDesc}</p>
                   <div className="tour-card-meta">
                     <span>{tour.duration}</span>
-                    {tour.showPrice && tour.priceFrom && <span>From €{tour.priceFrom}</span>}
                   </div>
                 </div>
               </Link>
@@ -145,7 +144,7 @@ export default async function Home() {
           <h2>Ready for an Unforgettable Journey?</h2>
           <p className="cta-subtitle">Let us handle the driving while you take in the views.</p>
           <div className="cta-buttons">
-            <Link href="/book" className="btn btn-primary">Book Your Transfer</Link>
+            <Link href="/book" className="btn btn-primary">Request Quote</Link>
             <Link href="/tours" className="btn btn-outline" style={{ color: 'white', borderColor: 'white' }}>Explore Tours</Link>
           </div>
         </div>

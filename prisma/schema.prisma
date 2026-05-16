@@ -17,36 +17,36 @@ model Admin {
 }
 
 model Tour {
-  id           String      @id @default(cuid())
-  slug         String      @unique
-  title        String
-  category     String      // DAY_TOUR, MULTI_DAY, CUSTOM
-  shortDesc    String      // One-liner for cards
-  description  String      // Full description
-  highlights   String      // JSON array of stops/highlights
-  duration     String      // "8 hours" / "10-12 hours"
-  distance     String?     // "160km"
-  priceFrom    Float?      // Nullable — some tours are "quote only"
-  showPrice    Boolean     @default(true)
-  included     String      // JSON array
-  excluded     String      // JSON array
-  mapPoints    String?     // JSON for Leaflet route
-  isActive     Boolean     @default(true)
-  sortOrder    Int         @default(0)
-  photos       TourPhoto[]
-  bookings     Booking[]
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  category    String
+  shortDesc   String
+  description String
+  highlights  String
+  duration    String
+  distance    String?
+  priceFrom   Float?
+  showPrice   Boolean     @default(true)
+  included    String
+  excluded    String
+  mapPoints   String?
+  isActive    Boolean     @default(true)
+  sortOrder   Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  bookings    Booking[]
+  photos      TourPhoto[]
 }
 
 model TourPhoto {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   tourId    String
-  tour      Tour   @relation(fields: [tourId], references: [id])
   url       String
   caption   String?
-  type      String @default("GALLERY") // MAIN, MOSAIC, GALLERY
-  sortOrder Int    @default(0)
+  sortOrder Int     @default(0)
+  type      String  @default("GALLERY")
+  tour      Tour    @relation(fields: [tourId], references: [id])
 }
 
 model Transfer {
@@ -64,40 +64,38 @@ model Transfer {
 }
 
 model Booking {
-  id           String   @id @default(cuid())
-  clientName   String
-  clientEmail  String
-  clientPhone  String
-  serviceType  String   // DAY_TOUR, TRANSFER, MULTI_DAY, CUSTOM
-  tourId       String?
-  tour         Tour?    @relation(fields: [tourId], references: [id])
-  transferId   String?
-  transfer     Transfer? @relation(fields: [transferId], references: [id])
-  date         String   // Could be a range for multi-day
-  passengers   String
-  pickupLocation String?
+  id              String       @id @default(cuid())
+  clientName      String
+  clientEmail     String
+  clientPhone     String
+  serviceType     String
+  tourId          String?
+  transferId      String?
+  passengers      String
+  notes           String?
+  referralSource  String?
+  status          String       @default("NEW")
+  adminNotes      String?
+  reviewToken     String?      @unique
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  date            String
   dropoffLocation String?
-  
-  // Arrival Details
-  arrivalType    String?  // AIRPORT, PORT, HOTEL, OTHER
-  flightNumber   String?
-  arrivalTime    String?
-  portName       String?
-  portGate       String?
-  
-  notes        String?
-  referralSource String?
-  status       String   @default("NEW") // NEW, CONTACTED, CONFIRMED, COMPLETED, REVIEW_SENT, CANCELLED
-  adminNotes   String?  // George's private notes
-  reviewToken  String?  @unique // Generated when George marks as COMPLETED
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  pickupLocation  String?
+  arrivalTime     String?
+  arrivalType     String?
+  flightNumber    String?
+  portGate        String?
+  portName        String?
+  tour            Tour?        @relation(fields: [tourId], references: [id])
+  transfer        Transfer?    @relation(fields: [transferId], references: [id])
+  logs            BookingLog[]
 }
 
 model CalendarDay {
   id        String   @id @default(cuid())
   date      DateTime @unique
-  status    String   @default("AVAILABLE") // AVAILABLE, BOOKED, BUSY
+  status    String   @default("AVAILABLE")
   bookingId String?
   note      String?
 }
@@ -107,29 +105,26 @@ model GalleryAlbum {
   title       String
   slug        String         @unique
   description String?
-  category    String?        // ATHENS, DELPHI, NAFPLION, etc.
-  isPublic    Boolean        @default(true) // For main gallery
-  isTrip      Boolean        @default(false) // For client trip albums
-  shareToken  String?        @unique // For shareable trip links
+  category    String?
+  isPublic    Boolean        @default(true)
+  isTrip      Boolean        @default(false)
+  shareToken  String?        @unique
   clientName  String?
   bookingId   String?
-  
-  // Linked Products
+  createdAt   DateTime       @default(now())
   tourId      String?
   transferId  String?
-  
   photos      GalleryPhoto[]
-  createdAt   DateTime       @default(now())
 }
 
 model GalleryPhoto {
   id        String       @id @default(cuid())
   albumId   String
-  album     GalleryAlbum @relation(fields: [albumId], references: [id])
   url       String
   thumbnail String?
   caption   String?
   sortOrder Int          @default(0)
+  album     GalleryAlbum @relation(fields: [albumId], references: [id])
 }
 
 model Review {
@@ -137,31 +132,40 @@ model Review {
   bookingId  String?
   clientName String
   tourTitle  String
-  rating     Int      // 1-5
+  rating     Int
   text       String
   isApproved Boolean  @default(false)
-  isFeatured Boolean  @default(false) // Show on landing page
-  token      String   @unique // Matches booking.reviewToken
+  isFeatured Boolean  @default(false)
+  token      String   @unique
   createdAt  DateTime @default(now())
 }
 
 model HomepagePhoto {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   url       String
   alt       String?
-  sortOrder Int    @default(0)
+  sortOrder Int     @default(0)
 }
 
 model GlobalSetting {
   key       String   @id
-  value     String   // JSON string
+  value     String
   updatedAt DateTime @updatedAt
+}
+
+model BookingLog {
+  id        String   @id @default(cuid())
+  bookingId String
+  action    String
+  message   String
+  createdAt DateTime @default(now())
+  booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }
 
 model FAQ {
   id        String   @id @default(cuid())
   question  String
-  answer    String   @db.Text
+  answer    String
   sortOrder Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

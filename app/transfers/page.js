@@ -39,11 +39,8 @@ export default async function TransfersPage() {
               </div>
               
               <div className="transfer-action">
-                {transfer.showPrice && transfer.priceFrom && (
-                  <div className="transfer-price">From €{transfer.priceFrom}</div>
-                )}
                 <Link href={`/book?type=transfer&id=${transfer.id}`} className="btn btn-outline">
-                  Book Transfer
+                  Request Quote
                 </Link>
               </div>
             </div>
