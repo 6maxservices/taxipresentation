@@ -35,14 +35,11 @@ export async function POST(req) {
       }
     });
 
-    // Send notifications in the background (do not await so user gets fast response)
-    // We catch errors to prevent unhandled rejections
-    Promise.allSettled([
+    const results = await Promise.allSettled([
       sendEmailNotification(booking),
       sendWhatsAppNotification(booking)
-    ]).then(results => {
-      console.log('Notification results:', results.map(r => r.status));
-    });
+    ]);
+    console.log('Notification results:', results.map(r => r.status));
 
     return NextResponse.json({ success: true, bookingId: booking.id }, { status: 201 });
   } catch (error) {
