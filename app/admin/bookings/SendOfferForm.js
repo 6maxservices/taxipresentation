@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Mail, Loader2, Check } from 'lucide-react';
-import { sendOfferAction } from './actions';
+import { updateBookingStatus } from './actions';
 
 export default function SendOfferForm({ booking }) {
   const [isOpen, setIsOpen] = useState(false);
