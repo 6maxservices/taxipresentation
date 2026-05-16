@@ -32,7 +32,7 @@ export default async function Footer() {
                 height: '100px', 
                 width: 'auto', 
                 margin: '0',
-                filter: 'invert(1) grayscale(1) brightness(10)',
+                filter: 'invert(1)',
                 mixBlendMode: 'screen',
                 objectFit: 'contain'
               }} 
