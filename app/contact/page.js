@@ -64,7 +64,15 @@ export default function ContactPage() {
               <a href="https://wa.me/306944466259" className="method-card">
                 <div className="method-icon whatsapp"><Phone size={24} /></div>
                 <div className="method-details">
-                  <h3>WhatsApp / iMessage</h3>
+                  <h3>WhatsApp</h3>
+                  <p>+30 694 446 6259</p>
+                </div>
+              </a>
+
+              <a href="sms:+306944466259" className="method-card">
+                <div className="method-icon imessage"><MessageSquare size={24} /></div>
+                <div className="method-details">
+                  <h3>iMessage / SMS</h3>
                   <p>+30 694 446 6259</p>
                 </div>
               </a>
@@ -74,14 +82,6 @@ export default function ContactPage() {
                 <div className="method-details">
                   <h3>Email Address</h3>
                   <p>gpapathe77@gmail.com</p>
-                </div>
-              </a>
-
-              <a href="https://m.me/george.papatheodorou" className="method-card">
-                <div className="method-icon messenger"><MessageSquare size={24} /></div>
-                <div className="method-details">
-                  <h3>Facebook Messenger</h3>
-                  <p>George Papatheodorou</p>
                 </div>
               </a>
             </div>

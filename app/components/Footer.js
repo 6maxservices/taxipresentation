@@ -29,10 +29,11 @@ export default async function Footer() {
               src="/logos/logo_option_1.png" 
               alt="George Papatheodorou Taxi Transfer & Tours" 
               style={{ 
-                height: '200px', 
+                height: '100px', 
                 width: 'auto', 
-                margin: '-60px -40px -40px -40px',
-                filter: 'brightness(0) invert(1)',
+                margin: '0',
+                filter: 'invert(1) grayscale(1) brightness(10)',
+                mixBlendMode: 'screen',
                 objectFit: 'contain'
               }} 
             />
@@ -77,7 +78,7 @@ export default async function Footer() {
             <ul>
               <li><Link href="/gallery">Gallery</Link></li>
               <li><Link href="/contact">Contact</Link></li>
-              <li><Link href="/book">Book Now</Link></li>
+              <li><Link href="/book">Request Quote</Link></li>
             </ul>
           </div>
         </div>
