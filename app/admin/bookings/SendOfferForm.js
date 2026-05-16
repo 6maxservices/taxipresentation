@@ -6,7 +6,7 @@ import { updateBookingStatus, logBookingAction } from './actions';
 export default function SendOfferForm({ booking }) {
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState('');
-  const [message, setMessage] = useState(`Hello ${booking.clientName},\n\nThank you for your request for the ${booking.serviceType} on ${new Date(booking.date).toLocaleDateString()}.\n\nI am happy to offer you this service for the total amount of €${amount}.\n\nPlease let me know if you would like to proceed with the booking.\n\nBest regards,\nGeorge Papatheodorou`);
+  const [message, setMessage] = useState(`Hello ${booking.clientName},\n\nThank you for reaching out to Discover Greece with George.\n\nRegarding your request for the ${booking.serviceType} on ${new Date(booking.date).toLocaleDateString()}, I am pleased to offer you this service for a total of €${amount}.\n\nThere is no deposit required to secure this booking. You simply pay at the end of your trip (cash or card).\n\nIf you would like to proceed, please reply to this email or reach out to me directly on WhatsApp/iMessage to confirm.`);
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
@@ -36,7 +36,7 @@ export default function SendOfferForm({ booking }) {
         );
 
         // 3. Open Gmail Compose
-        const signature = `\n\nBest regards,\nGeorge Papatheodorou\nTaxi Transfer & Tours Greece\nhttps://georgeathenstaxi.gr`;
+        const signature = `\n\nBest regards,\n\nGeorge Papatheodorou\nPremium Taxi Transfer & Tours\n\n📱 WhatsApp / iMessage: +30 694 446 6259\n✉️ Email: gpapathe77@gmail.com\n🌐 Web: https://www.georgeathenstaxi.gr`;
         const subject = encodeURIComponent(`Offer for your trip in Greece - George Papatheodorou`);
         const body = encodeURIComponent(message + signature);
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${booking.clientEmail}&su=${subject}&body=${body}`;
