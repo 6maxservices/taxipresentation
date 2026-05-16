@@ -25,7 +25,17 @@ export default async function Footer() {
       <div className="container footer-container">
         <div className="footer-brand">
           <Link href="/">
-            <img src="/logos/logo_option_1.png" alt="George Papatheodorou Taxi Transfer & Tours" style={{ height: '80px', width: 'auto', marginBottom: '1rem', filter: 'brightness(0) invert(1)' }} />
+            <img 
+              src="/logos/logo_option_1.png" 
+              alt="George Papatheodorou Taxi Transfer & Tours" 
+              style={{ 
+                height: '200px', 
+                width: 'auto', 
+                margin: '-60px -40px -40px -40px',
+                filter: 'brightness(0) invert(1)',
+                objectFit: 'contain'
+              }} 
+            />
           </Link>
           <p>Premium private tours and transfers in Athens and beyond.</p>
           

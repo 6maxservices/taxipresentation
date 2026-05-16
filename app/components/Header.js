@@ -10,8 +10,18 @@ export default function Header() {
   return (
     <header className="header">
       <div className="container header-container">
-        <Link href="/" className="logo">
-          <img src="/logos/logo_option_1.png" alt="George Papatheodorou Taxi Transfer & Tours" style={{ height: '60px', width: 'auto' }} />
+        <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+          <img 
+            src="/logos/logo_option_1.png" 
+            alt="George Papatheodorou Taxi Transfer & Tours" 
+            style={{ 
+              height: '180px', 
+              width: 'auto', 
+              margin: '-45px -30px',
+              mixBlendMode: 'multiply',
+              objectFit: 'contain'
+            }} 
+          />
         </Link>
         
         <button className="mobile-menu-btn" onClick={() => setIsOpen(!isOpen)}>
