@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import './faq.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function FAQPage() {
   const faqs = await prisma.fAQ.findMany({
     orderBy: { sortOrder: 'asc' }
