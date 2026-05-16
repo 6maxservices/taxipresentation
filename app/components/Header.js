@@ -10,17 +10,11 @@ export default function Header() {
   return (
     <header className="header">
       <div className="container header-container">
-        <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <Link href="/" className="logo-container">
           <img 
             src="/logos/logo_option_1.png" 
             alt="George Papatheodorou Taxi Transfer & Tours" 
-            style={{ 
-              height: '180px', 
-              width: 'auto', 
-              margin: '-45px -30px',
-              mixBlendMode: 'multiply',
-              objectFit: 'contain'
-            }} 
+            className="header-logo"
           />
         </Link>
         
