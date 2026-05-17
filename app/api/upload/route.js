@@ -32,16 +32,24 @@ export async function POST(req) {
     let publicUrl;
 
     if (s3Client && process.env.R2_BUCKET_NAME) {
-      await s3Client.send(new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
-        Key: filename,
-        Body: buffer,
-        ContentType: file.type,
-      }));
+      console.log('[Upload] Using R2, bucket:', process.env.R2_BUCKET_NAME, 'file:', filename);
+      try {
+        await s3Client.send(new PutObjectCommand({
+          Bucket: process.env.R2_BUCKET_NAME,
+          Key: filename,
+          Body: buffer,
+          ContentType: file.type,
+        }));
+        console.log('[Upload] R2 write success');
+      } catch (r2err) {
+        console.error('[Upload] R2 write FAILED:', r2err.message);
+        return NextResponse.json({ error: `R2 upload failed: ${r2err.message}` }, { status: 500 });
+      }
 
       publicUrl = process.env.R2_PUBLIC_DOMAIN
         ? `${process.env.R2_PUBLIC_DOMAIN}/${filename}`
         : `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${filename}`;
+      console.log('[Upload] Public URL:', publicUrl);
     } else {
       // Local fallback (development only)
       const photosDir = path.join(process.cwd(), 'public/photos');
