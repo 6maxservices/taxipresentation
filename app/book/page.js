@@ -67,9 +67,7 @@ function BookingForm() {
           // Arrival Details
           arrivalType: data.arrivalType,
           flightNumber: data.flightNumber || null,
-          arrivalTime: data.arrivalTime || null,
           portName: data.portName || null,
-          portGate: data.portGate || null,
           
           notes: `${data.product ? `Interested in: ${data.product}\n` : ''}${data.notes}`
         }),
@@ -204,28 +202,16 @@ function BookingForm() {
       </div>
 
       {arrivalType === 'airport' && (
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="flightNumber">Flight Number</label>
-            <input type="text" id="flightNumber" name="flightNumber" placeholder="e.g. DL123" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="arrivalTime">Arrival Time</label>
-            <input type="time" id="arrivalTime" name="arrivalTime" required />
-          </div>
+        <div className="form-group">
+          <label htmlFor="flightNumber">Flight Number</label>
+          <input type="text" id="flightNumber" name="flightNumber" placeholder="e.g. DL123" required />
         </div>
       )}
 
       {arrivalType === 'port' && (
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="portName">Ship Name / Port</label>
-            <input type="text" id="portName" name="portName" placeholder="e.g. Blue Star Delos" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="portGate">Gate / Arrival Time</label>
-            <input type="text" id="portGate" name="portGate" placeholder="e.g. Gate E1 / 08:30" required />
-          </div>
+        <div className="form-group">
+          <label htmlFor="portName">Ship / Ferry Name</label>
+          <input type="text" id="portName" name="portName" placeholder="e.g. Blue Star Delos" required />
         </div>
       )}
 
