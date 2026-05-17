@@ -32,23 +32,20 @@ export default function AlbumForm({ album = null, tours = [], transfers = [] }) 
     for (const file of files) {
       const formData = new FormData();
       formData.append('file', file);
-
       try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
         const data = await res.json();
-        if (data.success) {
-          uploaded.push(data);
-          addPhoto(data.url);
-        }
+        if (data.success) uploaded.push(data);
       } catch (err) {
         console.error('Upload failed for', file.name, err);
       }
     }
 
     setAllPhotos(prev => [...uploaded, ...prev]);
+    setPhotos(prev => [
+      ...prev,
+      ...uploaded.map((p, i) => ({ url: p.url, sortOrder: prev.length + i, caption: '' }))
+    ]);
     setLoading(false);
     e.target.value = '';
   };

@@ -34,23 +34,24 @@ export default function TourForm({ tour = null }) {
     for (const file of files) {
       const formData = new FormData();
       formData.append('file', file);
-
       try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
         const data = await res.json();
-        if (data.success) {
-          uploaded.push(data);
-          addPhoto(data.url);
-        }
+        if (data.success) uploaded.push(data);
       } catch (err) {
         console.error('Upload failed for', file.name, err);
       }
     }
 
     setAllPhotos(prev => [...uploaded, ...prev]);
+    setPhotos(prev => [
+      ...prev,
+      ...uploaded.map((p, i) => ({
+        url: p.url,
+        type: activeType,
+        sortOrder: prev.filter(ph => ph.type === activeType).length + i
+      }))
+    ]);
     setLoading(false);
     e.target.value = '';
   };
