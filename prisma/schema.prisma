@@ -162,6 +162,13 @@ model BookingLog {
   booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }
 
+model Photo {
+  id        String   @id @default(cuid())
+  url       String
+  name      String
+  createdAt DateTime @default(now())
+}
+
 model FAQ {
   id        String   @id @default(cuid())
   question  String

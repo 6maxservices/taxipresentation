@@ -3,6 +3,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { prisma } from '@/lib/prisma';
 
 const s3Client = process.env.R2_ACCESS_KEY_ID ? new S3Client({
   region: "auto",
@@ -27,8 +28,9 @@ export async function POST(req) {
 
     const ext = path.extname(file.name) || '.jpg';
     const filename = `${randomUUID()}${ext}`;
-    
-    // Cloudflare R2 Upload
+
+    let publicUrl;
+
     if (s3Client && process.env.R2_BUCKET_NAME) {
       await s3Client.send(new PutObjectCommand({
         Bucket: process.env.R2_BUCKET_NAME,
@@ -36,33 +38,24 @@ export async function POST(req) {
         Body: buffer,
         ContentType: file.type,
       }));
-      
-      // Return the public URL if set, otherwise use a placeholder or the R2 domain
-      const publicUrl = process.env.R2_PUBLIC_DOMAIN 
+
+      publicUrl = process.env.R2_PUBLIC_DOMAIN
         ? `${process.env.R2_PUBLIC_DOMAIN}/${filename}`
         : `https://${process.env.R2_BUCKET_NAME}.${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${filename}`;
-
-      return NextResponse.json({ 
-        success: true, 
-        url: publicUrl,
-        name: filename
-      });
+    } else {
+      // Local fallback (development only)
+      const photosDir = path.join(process.cwd(), 'public/photos');
+      try { await mkdir(photosDir, { recursive: true }); } catch (e) {}
+      await writeFile(path.join(photosDir, filename), buffer);
+      publicUrl = `/photos/${filename}`;
     }
 
-    // Local Fallback (Development Only)
-    const photosDir = path.join(process.cwd(), 'public/photos');
-    try {
-      await mkdir(photosDir, { recursive: true });
-    } catch (e) {}
-
-    const filePath = path.join(photosDir, filename);
-    await writeFile(filePath, buffer);
-
-    return NextResponse.json({ 
-      success: true, 
-      url: `/photos/${filename}`,
-      name: filename
+    // Save to database so the library can list it
+    const photo = await prisma.photo.create({
+      data: { url: publicUrl, name: file.name || filename }
     });
+
+    return NextResponse.json({ success: true, url: publicUrl, name: photo.name, id: photo.id });
   } catch (error) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
