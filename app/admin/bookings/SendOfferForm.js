@@ -11,7 +11,6 @@ export default function SendOfferForm({ booking }) {
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
 
-  // Update message when amount changes
   const handleAmountChange = (e) => {
     const newAmount = e.target.value;
     setAmount(newAmount);
@@ -22,37 +21,40 @@ export default function SendOfferForm({ booking }) {
     e.preventDefault();
     setIsSending(true);
     setError('');
-    
+
+    // Open blank window synchronously — iOS Safari blocks window.open()
+    // called after an await, so we must open it before any async work.
+    const gmailWindow = window.open('', '_blank');
+
     try {
-      // 1. Update status to CONTACTED locally
       const result = await updateBookingStatus(booking.id, 'CONTACTED');
-      
+
       if (result.success) {
-        // 2. Log the action
         await logBookingAction(
-          booking.id, 
-          'OFFER_SENT', 
+          booking.id,
+          'OFFER_SENT',
           `Sent offer of €${amount} via Gmail`
         );
 
-        // 3. Open Gmail Compose
         const signature = `\n\nBest regards,\n\nGeorge Papatheodorou\nPremium Taxi Transfer & Tours\n\n📱 WhatsApp / iMessage: +30 694 446 6259\n✉️ Email: gpapathe77@gmail.com\n🌐 Web: https://www.georgeathenstaxi.gr`;
         const subject = encodeURIComponent(`Offer for your trip in Greece - George Papatheodorou`);
         const body = encodeURIComponent(message + signature);
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${booking.clientEmail}&su=${subject}&body=${body}`;
-        
-        window.open(gmailUrl, '_blank');
-        
+
+        gmailWindow.location = gmailUrl;
+
         setIsSent(true);
         setTimeout(() => {
           setIsOpen(false);
           setIsSent(false);
-          window.location.reload(); // Refresh to show logs
+          window.location.reload();
         }, 3000);
       } else {
+        gmailWindow.close();
         setError(result.error || 'Failed to update booking status');
       }
     } catch (err) {
+      gmailWindow.close();
       setError('An error occurred while updating the status.');
     } finally {
       setIsSending(false);
@@ -61,7 +63,7 @@ export default function SendOfferForm({ booking }) {
 
   if (!isOpen) {
     return (
-      <button 
+      <button
         onClick={() => setIsOpen(true)}
         className="btn btn-primary"
         style={{ padding: '6px 12px', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '6px' }}
@@ -74,7 +76,7 @@ export default function SendOfferForm({ booking }) {
   return (
     <div style={{ marginTop: 'var(--space-md)', padding: 'var(--space-md)', border: '1px solid var(--color-azure)', borderRadius: '8px', backgroundColor: '#f0f7ff' }}>
       <h4 style={{ marginBottom: 'var(--space-sm)', color: 'var(--color-azure-dark)' }}>Prepare Custom Offer</h4>
-      
+
       {isSent ? (
         <div style={{ color: '#155724', backgroundColor: '#d4edda', padding: 'var(--space-sm)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Check size={18} /> Status updated! Opening Gmail...
@@ -83,21 +85,21 @@ export default function SendOfferForm({ booking }) {
         <form onSubmit={handleSend}>
           <div className="form-group">
             <label>Amount (€)</label>
-            <input 
-              type="number" 
-              value={amount} 
-              onChange={handleAmountChange} 
-              placeholder="e.g. 250" 
-              required 
+            <input
+              type="number"
+              value={amount}
+              onChange={handleAmountChange}
+              placeholder="e.g. 250"
+              required
             />
           </div>
-          
+
           <div className="form-group">
             <label>Email Message</label>
-            <textarea 
-              value={message} 
-              onChange={(e) => setMessage(e.target.value)} 
-              rows={8} 
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={8}
               required
             />
           </div>
@@ -105,17 +107,17 @@ export default function SendOfferForm({ booking }) {
           {error && <p style={{ color: '#d00000', fontSize: '0.875rem', marginBottom: 'var(--space-sm)' }}>{error}</p>}
 
           <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
+            <button
+              type="submit"
+              className="btn btn-primary"
               disabled={isSending}
               style={{ flex: 1 }}
             >
               {isSending ? <Loader2 className="animate-spin" size={18} /> : 'Update Status & Open Gmail'}
             </button>
-            <button 
-              type="button" 
-              className="btn btn-outline" 
+            <button
+              type="button"
+              className="btn btn-outline"
               onClick={() => setIsOpen(false)}
               disabled={isSending}
             >
