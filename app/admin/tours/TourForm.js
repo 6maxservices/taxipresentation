@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { saveTour } from './actions';
 import Image from 'next/image';
@@ -13,6 +13,7 @@ export default function TourForm({ tour = null }) {
   const [activeType, setActiveType] = useState(null);
 
   const [photos, setPhotos] = useState(tour?.photos || []);
+  const uploadRef = useRef(null);
 
   useEffect(() => {
     async function fetchPhotos() {
@@ -277,18 +278,24 @@ export default function TourForm({ tour = null }) {
             </div>
             
             <div style={{ marginBottom: '1rem' }}>
-              <label className="btn btn-outline" style={{ display: 'inline-block', cursor: 'pointer' }}>
-                + Upload New Photo
-                <input type="file" multiple onChange={handleUpload} style={{ display: 'none' }} accept="image/*" />
-              </label>
+              <button type="button" className="btn btn-outline" onClick={() => uploadRef.current?.click()}>
+                {loading ? 'Uploading...' : '+ Upload New Photo'}
+              </button>
+              <input ref={uploadRef} type="file" multiple onChange={handleUpload} accept="image/*" style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }} />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '1rem' }}>
-              {allPhotos.map((photo, i) => (
-                <div key={i} onClick={() => addPhoto(photo.url)} style={{ position: 'relative', aspectRatio: '1', cursor: 'pointer', borderRadius: '4px', overflow: 'hidden' }}>
-                  <Image src={photo.url} fill className="object-cover" alt="Library" />
-                </div>
-              ))}
+              {allPhotos.map((photo, i) => {
+                const isSelected = photos.some(p => p.url === photo.url && p.type === activeType);
+                return (
+                  <div key={i} onClick={() => addPhoto(photo.url)} style={{ position: 'relative', aspectRatio: '1', cursor: 'pointer', borderRadius: '4px', overflow: 'hidden', outline: isSelected ? '3px solid #28a745' : 'none' }}>
+                    <Image src={photo.url} fill className="object-cover" alt="Library" />
+                    {isSelected && (
+                      <div style={{ position: 'absolute', top: 4, right: 4, background: '#28a745', color: 'white', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 'bold' }}>✓</div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

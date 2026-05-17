@@ -1,7 +1,8 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
-import { Phone, Mail, MessageSquare, Facebook, Instagram } from 'lucide-react';
+import { Phone, Mail, MessageSquare, Facebook } from 'lucide-react';
+import InstagramIcon from '@/app/components/InstagramIcon';
 import './contact.css';
 
 function ContactForm() {
@@ -109,7 +110,7 @@ export default function ContactPage() {
             <h2 className="font-serif" style={{ marginTop: '3rem' }}>Follow Us</h2>
             <div className="social-links">
               <a href="#" className="social-icon"><Facebook size={24} /></a>
-              <a href="#" className="social-icon"><Instagram size={24} /></a>
+              <a href="#" className="social-icon"><InstagramIcon size={24} /></a>
               <a href="https://wa.me/306944466259" className="social-icon"><Phone size={24} /></a>
             </div>
           </div>

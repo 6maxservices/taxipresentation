@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import './Footer.css';
 import { prisma } from '@/lib/prisma';
-import { Facebook, Instagram, Send, Mail } from 'lucide-react';
+import { Facebook, Send, Mail } from 'lucide-react';
+import InstagramIcon from './InstagramIcon';
 
 async function getSettings() {
   try {
@@ -48,7 +49,7 @@ export default async function Footer() {
             )}
             {social.instagram?.enabled && (
               <a href={social.instagram.url} target="_blank" rel="noopener noreferrer" className="social-icon">
-                <Instagram size={20} />
+                <InstagramIcon size={20} />
               </a>
             )}
             {social.telegram?.enabled && (

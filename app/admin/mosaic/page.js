@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 export default function MosaicManager() {
@@ -7,7 +7,9 @@ export default function MosaicManager() {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const uploadRef = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -33,6 +35,40 @@ export default function MosaicManager() {
     }
     fetchData();
   }, []);
+
+  const handleUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    const newPhotos = [];
+
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          newPhotos.push({ url: data.url, name: data.name });
+        }
+      } catch (err) {
+        console.error('Upload failed for', file.name, err);
+      }
+    }
+
+    setAllPhotos(prev => [...newPhotos, ...prev]);
+
+    // Auto-select newly uploaded photos up to the 5-photo limit
+    setSelectedPhotos(prev => {
+      const available = 5 - prev.length;
+      const toAdd = newPhotos.slice(0, available).map(p => p.url);
+      return [...prev, ...toAdd];
+    });
+
+    setUploading(false);
+    e.target.value = '';
+  };
 
   const togglePhoto = (url) => {
     if (selectedPhotos.includes(url)) {
@@ -131,7 +167,13 @@ export default function MosaicManager() {
       </div>
 
       <div className="admin-card">
-        <h2 className="font-serif" style={{ marginBottom: '1rem' }}>Photo Library</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h2 className="font-serif">Photo Library</h2>
+          <button type="button" className="btn btn-outline" onClick={() => uploadRef.current?.click()}>
+            {uploading ? 'Uploading...' : '+ Upload Photo'}
+          </button>
+          <input ref={uploadRef} type="file" multiple onChange={handleUpload} accept="image/*" style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }} />
+        </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '1rem', maxHeight: '500px', overflowY: 'auto', padding: '4px' }}>
           {allPhotos.map(photo => (
             <div 
