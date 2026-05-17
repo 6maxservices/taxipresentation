@@ -143,8 +143,8 @@ export default function TourForm({ tour = null }) {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 'bold' }}>Main Photo (Card)</label>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               {photos.find(p => p.type === 'MAIN') ? (
-                <div style={{ position: 'relative', width: '120px', height: '120px' }}>
-                  <Image src={photos.find(p => p.type === 'MAIN').url} fill className="object-cover rounded" alt="Main" />
+                <div style={{ position: 'relative', width: '120px', height: '120px', borderRadius: '4px', overflow: 'hidden', background: '#eee' }}>
+                  <img src={photos.find(p => p.type === 'MAIN').url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Main" />
                   <button type="button" onClick={() => removePhoto(photos.findIndex(p => p.type === 'MAIN'))} style={{ position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer' }}>×</button>
                 </div>
               ) : (
@@ -159,8 +159,8 @@ export default function TourForm({ tour = null }) {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 'bold' }}>Top Mosaic (Max 6)</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '0.5rem', marginBottom: '0.5rem' }}>
               {photos.filter(p => p.type === 'MOSAIC').map((p, i) => (
-                <div key={i} style={{ position: 'relative', aspectRatio: '1' }}>
-                  <Image src={p.url} fill className="object-cover rounded" alt="Mosaic" />
+                <div key={i} style={{ position: 'relative', aspectRatio: '1', background: '#eee', borderRadius: '4px', overflow: 'hidden' }}>
+                  <img src={p.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Mosaic" />
                   <button type="button" onClick={() => removePhoto(photos.indexOf(p))} style={{ position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '18px', height: '18px', cursor: 'pointer', fontSize: '10px' }}>×</button>
                 </div>
               ))}
@@ -175,8 +175,8 @@ export default function TourForm({ tour = null }) {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 'bold' }}>Bottom Gallery (Unlimited)</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '0.5rem', marginBottom: '0.5rem' }}>
               {photos.filter(p => p.type === 'GALLERY').map((p, i) => (
-                <div key={i} style={{ position: 'relative', aspectRatio: '1' }}>
-                  <Image src={p.url} fill className="object-cover rounded" alt="Gallery" />
+                <div key={i} style={{ position: 'relative', aspectRatio: '1', background: '#eee', borderRadius: '4px', overflow: 'hidden' }}>
+                  <img src={p.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Gallery" />
                   <button type="button" onClick={() => removePhoto(photos.indexOf(p))} style={{ position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '18px', height: '18px', cursor: 'pointer', fontSize: '10px' }}>×</button>
                 </div>
               ))}

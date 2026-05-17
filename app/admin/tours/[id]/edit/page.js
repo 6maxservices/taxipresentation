@@ -10,7 +10,8 @@ export default async function EditTourPage({ params }) {
   const { id } = await params;
   
   const tour = await prisma.tour.findUnique({
-    where: { id }
+    where: { id },
+    include: { photos: { orderBy: { sortOrder: 'asc' } } }
   });
 
   if (!tour) {

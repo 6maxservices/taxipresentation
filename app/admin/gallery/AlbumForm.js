@@ -142,8 +142,8 @@ export default function AlbumForm({ album = null, tours = [], transfers = [] }) 
           <h3 className="font-serif" style={{ marginBottom: '1rem' }}>Photos ({photos.length})</h3>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
             {photos.map((p, i) => (
-              <div key={i} style={{ position: 'relative', aspectRatio: '1' }}>
-                <Image src={p.url} fill className="object-cover rounded" alt="Album" />
+              <div key={i} style={{ position: 'relative', aspectRatio: '1', background: '#eee', borderRadius: '4px', overflow: 'hidden' }}>
+                <img src={p.url} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Album" />
                 <button type="button" onClick={() => removePhoto(i)} style={{ position: 'absolute', top: -5, right: -5, background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer' }}>×</button>
               </div>
             ))}
