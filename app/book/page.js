@@ -2,6 +2,8 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import LocationInput from './LocationInput';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import './book.css';
 
 function BookingForm() {
@@ -13,6 +15,7 @@ function BookingForm() {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [products, setProducts] = useState({ tours: [], transfers: [] });
   const [arrivalType, setArrivalType] = useState('hotel');
+  const [phone, setPhone] = useState('');
   const [customPassengers, setCustomPassengers] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -58,7 +61,7 @@ function BookingForm() {
           serviceType: data.serviceType,
           clientName: data.name,
           clientEmail: data.email,
-          clientPhone: data.phone,
+          clientPhone: `+${phone}`,
           date: data.date,
           passengers: data.passengers === 'custom' ? data.passengersCustom : data.passengers,
           pickupLocation: data.pickup,
@@ -149,7 +152,16 @@ function BookingForm() {
         </div>
         <div className="form-group">
           <label htmlFor="phone">Phone Number (WhatsApp preferred)</label>
-          <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8900" />
+          <PhoneInput
+            country={'gr'}
+            preferredCountries={['gr', 'us', 'gb', 'de', 'fr', 'it', 'es', 'au', 'ca', 'nl', 'be', 'ch', 'at', 'se', 'no', 'dk', 'fi', 'pl', 'il', 'ae']}
+            value={phone}
+            onChange={setPhone}
+            inputProps={{ id: 'phone', name: 'phone', required: true }}
+            containerStyle={{ width: '100%' }}
+            inputStyle={{ width: '100%', height: '42px', fontSize: '1rem', borderRadius: '6px', border: '1px solid #ced4da' }}
+            buttonStyle={{ borderRadius: '6px 0 0 6px', border: '1px solid #ced4da' }}
+          />
         </div>
       </div>
 
@@ -196,7 +208,7 @@ function BookingForm() {
         >
           <option value="hotel">Hotel / Private Address</option>
           <option value="airport">Airport (ATH)</option>
-          <option value="port">Port (Piraeus, Rafina, Lavrio)</option>
+          <option value="port">Port</option>
           <option value="other">Other</option>
         </select>
       </div>
