@@ -23,8 +23,6 @@ export default function SendOfferForm({ booking }) {
     setError('');
 
     try {
-      const signature = `\n\nBest regards,\n\nGeorge Papatheodorou\nPremium Taxi Transfer & Tours\n\n📱 WhatsApp / iMessage: +30 694 446 6259\n✉️ Email: gpapathe77@gmail.com\n🌐 Web: https://www.georgeathenstaxi.gr`;
-
       const [sendResult] = await Promise.all([
         fetch('/api/send-offer', {
           method: 'POST',
@@ -32,7 +30,7 @@ export default function SendOfferForm({ booking }) {
           body: JSON.stringify({
             to: booking.clientEmail,
             subject: `Offer for your trip in Greece - George Papatheodorou`,
-            body: message + signature,
+            body: message,
           }),
         }).then(r => r.json()),
         updateBookingStatus(booking.id, 'CONTACTED'),
