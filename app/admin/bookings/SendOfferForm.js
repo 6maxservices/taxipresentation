@@ -22,40 +22,41 @@ export default function SendOfferForm({ booking }) {
     setIsSending(true);
     setError('');
 
-    // Open blank window synchronously — iOS Safari blocks window.open()
-    // called after an await, so we must open it before any async work.
-    const gmailWindow = window.open('', '_blank');
-
     try {
-      const result = await updateBookingStatus(booking.id, 'CONTACTED');
+      const signature = `\n\nBest regards,\n\nGeorge Papatheodorou\nPremium Taxi Transfer & Tours\n\n📱 WhatsApp / iMessage: +30 694 446 6259\n✉️ Email: gpapathe77@gmail.com\n🌐 Web: https://www.georgeathenstaxi.gr`;
 
-      if (result.success) {
-        await logBookingAction(
-          booking.id,
-          'OFFER_SENT',
-          `Sent offer of €${amount} via Gmail`
-        );
+      const [sendResult] = await Promise.all([
+        fetch('/api/send-offer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: booking.clientEmail,
+            subject: `Offer for your trip in Greece - George Papatheodorou`,
+            body: message + signature,
+          }),
+        }).then(r => r.json()),
+        updateBookingStatus(booking.id, 'CONTACTED'),
+      ]);
 
-        const signature = `\n\nBest regards,\n\nGeorge Papatheodorou\nPremium Taxi Transfer & Tours\n\n📱 WhatsApp / iMessage: +30 694 446 6259\n✉️ Email: gpapathe77@gmail.com\n🌐 Web: https://www.georgeathenstaxi.gr`;
-        const subject = encodeURIComponent(`Offer for your trip in Greece - George Papatheodorou`);
-        const body = encodeURIComponent(message + signature);
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${booking.clientEmail}&su=${subject}&body=${body}`;
-
-        gmailWindow.location = gmailUrl;
-
-        setIsSent(true);
-        setTimeout(() => {
-          setIsOpen(false);
-          setIsSent(false);
-          window.location.reload();
-        }, 3000);
-      } else {
-        gmailWindow.close();
-        setError(result.error || 'Failed to update booking status');
+      if (sendResult.error) {
+        setError(sendResult.error);
+        return;
       }
+
+      await logBookingAction(
+        booking.id,
+        'OFFER_SENT',
+        `Sent offer of €${amount} via email`
+      );
+
+      setIsSent(true);
+      setTimeout(() => {
+        setIsOpen(false);
+        setIsSent(false);
+        window.location.reload();
+      }, 3000);
     } catch (err) {
-      gmailWindow.close();
-      setError('An error occurred while updating the status.');
+      setError('An error occurred while sending the email.');
     } finally {
       setIsSending(false);
     }
@@ -79,7 +80,7 @@ export default function SendOfferForm({ booking }) {
 
       {isSent ? (
         <div style={{ color: '#155724', backgroundColor: '#d4edda', padding: 'var(--space-sm)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Check size={18} /> Status updated! Opening Gmail...
+          <Check size={18} /> Email sent successfully!
         </div>
       ) : (
         <form onSubmit={handleSend}>
@@ -113,7 +114,7 @@ export default function SendOfferForm({ booking }) {
               disabled={isSending}
               style={{ flex: 1 }}
             >
-              {isSending ? <Loader2 className="animate-spin" size={18} /> : 'Update Status & Open Gmail'}
+              {isSending ? <Loader2 className="animate-spin" size={18} /> : 'Send Offer Email'}
             </button>
             <button
               type="button"
