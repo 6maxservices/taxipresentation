@@ -216,15 +216,17 @@ function BookingForm() {
       )}
 
       <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="pickup">Pick-up Location Details</label>
-          <LocationInput 
-            id="pickup" 
-            name="pickup" 
-            placeholder={arrivalType === 'hotel' ? "Hotel name or address" : "Specific terminal or meeting point"} 
-            required 
-          />
-        </div>
+        {arrivalType !== 'airport' && arrivalType !== 'port' && (
+          <div className="form-group">
+            <label htmlFor="pickup">Pick-up Location Details</label>
+            <LocationInput
+              id="pickup"
+              name="pickup"
+              placeholder={arrivalType === 'hotel' ? "Hotel name or address" : "Specific meeting point"}
+              required
+            />
+          </div>
+        )}
         <div className="form-group">
           <label htmlFor="dropoff">Drop-off Location</label>
           <LocationInput id="dropoff" name="dropoff" placeholder="Destination address (optional)" />
