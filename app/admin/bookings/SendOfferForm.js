@@ -6,7 +6,7 @@ import { updateBookingStatus, logBookingAction } from './actions';
 export default function SendOfferForm({ booking }) {
   const [isOpen, setIsOpen] = useState(false);
   const [amount, setAmount] = useState('');
-  const [message, setMessage] = useState(`Hello ${booking.clientName},\n\nThank you for reaching out to Discover Greece with George.\n\nRegarding your request for the ${booking.serviceType} on ${new Date(booking.date).toLocaleDateString()}, I am pleased to offer you this service for a total of €${amount}.\n\nThere is no deposit required to secure this booking. You simply pay at the end of your trip (cash or card).\n\nIf you would like to proceed, please reply to this email or reach out to me directly on WhatsApp/iMessage to confirm.`);
+  const [message, setMessage] = useState(`Hello ${booking.clientName},\n\nThank you for reaching out to Discover Greece with George.\n\nRegarding your request for the ${booking.serviceType} on ${new Date(booking.date).toLocaleDateString()}, I am pleased to offer you this service for a total of €${amount}.\n\nThere is no deposit required to secure this booking. You simply pay at the end of your trip (cash or card).\n\nIf you would like to proceed, please reply to this email to confirm.`);
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
