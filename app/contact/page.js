@@ -113,6 +113,18 @@ export default function ContactPage() {
               <a href="#" className="social-icon"><InstagramIcon size={24} /></a>
               <a href="https://wa.me/306944466259" className="social-icon"><Phone size={24} /></a>
             </div>
+
+            <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
+              <h3 style={{ fontWeight: '700', fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--color-charcoal)' }}>
+                Licensed Tour Operator
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#6c757d', lineHeight: '1.7', margin: 0 }}>
+                George Papatheodorou<br />
+                Tour Operator<br />
+                Greek National Tourist Organisation<br />
+                Lic. No. 0208E70000094100
+              </p>
+            </div>
           </div>
 
           <div className="contact-form-container">

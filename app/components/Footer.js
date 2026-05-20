@@ -82,6 +82,13 @@ export default async function Footer() {
               <li><Link href="/book">Request Quote</Link></li>
             </ul>
           </div>
+          <div className="footer-license">
+            <h3>Licensed Operator</h3>
+            <p>George Papatheodorou</p>
+            <p>Tour Operator</p>
+            <p>Greek National Tourist Organisation</p>
+            <p>Lic. No. 0208E70000094100</p>
+          </div>
         </div>
       </div>
       <div className="footer-bottom container">

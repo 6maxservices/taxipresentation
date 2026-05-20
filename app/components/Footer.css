@@ -28,6 +28,13 @@
   gap: var(--space-lg);
 }
 
+.footer-license p {
+  color: #adb5bd;
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+  line-height: 1.5;
+}
+
 .footer-links h3 {
   color: var(--color-white);
   font-size: 1.125rem;
@@ -75,6 +82,10 @@
 @media (min-width: 768px) {
   .footer-container {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-links {
+    grid-template-columns: 1fr 1fr 1fr;
   }
   
   .footer-bottom {
