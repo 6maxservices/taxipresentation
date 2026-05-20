@@ -116,7 +116,7 @@ export default function ContactPage() {
 
             <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(0,0,0,0.08)' }}>
               <h3 style={{ fontWeight: '700', fontSize: '1rem', marginBottom: '0.5rem', color: 'var(--color-charcoal)' }}>
-                Licensed Tour Operator
+                Licensed Taxi Driver & Tour Operator
               </h3>
               <p style={{ fontSize: '0.85rem', color: '#6c757d', lineHeight: '1.7', margin: 0 }}>
                 George Papatheodorou<br />

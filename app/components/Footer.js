@@ -83,7 +83,7 @@ export default async function Footer() {
             </ul>
           </div>
           <div className="footer-license">
-            <h3>Licensed Operator</h3>
+            <h3>Licensed Taxi Driver & Tour Operator</h3>
             <p>George Papatheodorou</p>
             <p>Tour Operator</p>
             <p>Greek National Tourist Organisation</p>
