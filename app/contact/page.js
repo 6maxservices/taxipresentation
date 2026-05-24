@@ -61,6 +61,9 @@ function ContactForm() {
         <label>Your Message</label>
         <textarea name="message" required rows="5" placeholder="How can we help you?"></textarea>
       </div>
+      <div className="submit-disclaimer" style={{ fontSize: '0.75rem', color: '#6c757d', marginBottom: '1rem', lineHeight: '1.4' }}>
+        <strong>Customer Contact Information:</strong> By using our services, customers agree that their mobile phone number may be shared with our drivers solely for the purpose of communication regarding pickup instructions, meeting points, transfer coordination, and other transportation-related updates. We respect our customers' privacy and ensure that personal information is used only in connection with the requested transportation service. For more details, please view our <a href="/privacy" target="_blank" style={{ color: 'var(--color-azure-dark)', textDecoration: 'underline' }}>Privacy Policy</a>.
+      </div>
       <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Send Message</button>
     </form>
   );

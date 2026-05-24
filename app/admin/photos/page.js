@@ -1,13 +1,15 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Upload, Trash2, CheckCircle2, Loader2 } from 'lucide-react';
+import { Upload, Trash2, Loader2 } from 'lucide-react';
 
 export default function MediaLibrary() {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState({ current: 0, total: 0 });
+  const [uploadErrors, setUploadErrors] = useState([]);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchPhotos();
@@ -31,32 +33,54 @@ export default function MediaLibrary() {
 
     setUploading(true);
     setProgress({ current: 0, total: files.length });
+    setUploadErrors([]);
 
     const uploaded = [];
-    
+    const errors = [];
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const formData = new FormData();
-      formData.append('file', file);
+      const sizeMB = (file.size / 1024 / 1024).toFixed(1);
 
       try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
+        // Step 1: get a presigned PUT URL from the server
+        const presignRes = await fetch(
+          `/api/upload/presign?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type || 'image/jpeg')}`
+        );
+        if (!presignRes.ok) throw new Error('Could not get upload URL');
+        const { uploadUrl, publicUrl } = await presignRes.json();
+
+        // Step 2: PUT the file directly to R2 (no Vercel size limit)
+        const putRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': file.type || 'image/jpeg' },
+          body: file,
         });
-        const data = await res.json();
+        if (!putRes.ok) throw new Error(`R2 rejected upload (${putRes.status})`);
+
+        // Step 3: register the URL in the database
+        const registerRes = await fetch('/api/upload/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: publicUrl, name: file.name }),
+        });
+        const data = await registerRes.json();
         if (data.success) {
           uploaded.push(data);
+        } else {
+          errors.push(`${file.name}: ${data.error || 'Failed to save'}`);
         }
-        setProgress(prev => ({ ...prev, current: i + 1 }));
       } catch (err) {
-        console.error('Upload failed for file', file.name, err);
+        errors.push(`${file.name} (${sizeMB}MB): ${err.message || 'Upload failed'}`);
+        console.error('Upload failed for', file.name, err);
       }
+
+      setProgress(prev => ({ ...prev, current: i + 1 }));
     }
 
     setPhotos(prev => [...uploaded, ...prev]);
+    setUploadErrors(errors);
     setUploading(false);
-    // Reset file input
     e.target.value = '';
   };
 
@@ -78,22 +102,36 @@ export default function MediaLibrary() {
     <div className="container">
       <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 className="font-serif">Media Library</h1>
-        
-        <div style={{ position: 'relative' }}>
-          <label className={`btn btn-primary ${uploading ? 'disabled' : ''}`} style={{ cursor: uploading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+
+        <div>
+          <button
+            className={`btn btn-primary ${uploading ? 'disabled' : ''}`}
+            style={{ cursor: uploading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+            onClick={() => !uploading && fileInputRef.current?.click()}
+            disabled={uploading}
+          >
             {uploading ? <Loader2 className="animate-spin" size={18} /> : <Upload size={18} />}
-            {uploading ? `Uploading (${progress.current}/${progress.total})...` : 'Upload Photos'}
-            <input 
-              type="file" 
-              multiple 
-              onChange={handleUpload} 
-              style={{ display: 'none' }} 
-              accept="image/*"
-              disabled={uploading}
-            />
-          </label>
+            {uploading ? `Uploading ${progress.current}/${progress.total}...` : 'Upload Photos'}
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            onChange={handleUpload}
+            style={{ display: 'none' }}
+            accept="image/*"
+          />
         </div>
       </div>
+
+      {uploadErrors.length > 0 && (
+        <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '8px', padding: '1rem', marginBottom: '1.5rem' }}>
+          <strong style={{ color: '#856404' }}>Some photos failed to upload:</strong>
+          <ul style={{ margin: '0.5rem 0 0 1.2rem', color: '#856404' }}>
+            {uploadErrors.map((err, i) => <li key={i}>{err}</li>)}
+          </ul>
+        </div>
+      )}
 
       {loading ? (
         <div className="text-center" style={{ padding: '4rem' }}>
@@ -109,17 +147,17 @@ export default function MediaLibrary() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '1.5rem' }}>
               {photos.map((photo) => (
-                <div key={photo.id} className="admin-card" style={{ padding: '0', overflow: 'hidden', position: 'relative', group: 'true' }}>
+                <div key={photo.id} className="admin-card" style={{ padding: '0', overflow: 'hidden', position: 'relative' }}>
                   <div style={{ position: 'relative', aspectRatio: '4/3' }}>
-                    <Image 
-                      src={photo.url} 
-                      alt={photo.name} 
-                      fill 
+                    <Image
+                      src={photo.url}
+                      alt={photo.name}
+                      fill
                       className="object-cover"
                       sizes="(max-width: 768px) 50vw, 20vw"
                     />
                     <div className="photo-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.4)', opacity: 0, transition: 'opacity 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <button 
+                      <button
                         onClick={() => deletePhoto(photo.id)}
                         style={{ background: 'white', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#d00000' }}
                         title="Delete Photo"

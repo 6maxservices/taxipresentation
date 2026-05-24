@@ -71,6 +71,7 @@ function BookingForm() {
           arrivalType: data.arrivalType,
           flightNumber: data.flightNumber || null,
           portName: data.portName || null,
+          arrivalTime: data.arrivalTime || null,
           
           notes: `${data.product ? `Interested in: ${data.product}\n` : ''}${data.notes}`
         }),
@@ -214,16 +215,28 @@ function BookingForm() {
       </div>
 
       {arrivalType === 'airport' && (
-        <div className="form-group">
-          <label htmlFor="flightNumber">Flight Number</label>
-          <input type="text" id="flightNumber" name="flightNumber" placeholder="e.g. DL123" required />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="flightNumber">Flight Number</label>
+            <input type="text" id="flightNumber" name="flightNumber" placeholder="e.g. DL123" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="arrivalTime">Estimated Time of Arrival (ETA)</label>
+            <input type="time" id="arrivalTime" name="arrivalTime" required />
+          </div>
         </div>
       )}
 
       {arrivalType === 'port' && (
-        <div className="form-group">
-          <label htmlFor="portName">Ship / Ferry Name</label>
-          <input type="text" id="portName" name="portName" placeholder="e.g. Blue Star Delos" required />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="portName">Ship / Ferry Name</label>
+            <input type="text" id="portName" name="portName" placeholder="e.g. Blue Star Delos" required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="arrivalTime">Estimated Time of Arrival (ETA)</label>
+            <input type="time" id="arrivalTime" name="arrivalTime" required />
+          </div>
         </div>
       )}
 
@@ -253,6 +266,10 @@ function BookingForm() {
           rows="4" 
           placeholder="Any special requests or requirements?"
         ></textarea>
+      </div>
+
+      <div className="submit-disclaimer" style={{ fontSize: '0.75rem', color: '#6c757d', marginBottom: '1rem', lineHeight: '1.4' }}>
+        <strong>Customer Contact Information:</strong> By using our services, customers agree that their mobile phone number may be shared with our drivers solely for the purpose of communication regarding pickup instructions, meeting points, transfer coordination, and other transportation-related updates. We respect our customers' privacy and ensure that personal information is used only in connection with the requested transportation service. For more details, please view our <a href="/privacy" target="_blank" style={{ color: 'var(--color-azure-dark)', textDecoration: 'underline' }}>Privacy Policy</a>.
       </div>
 
       <div className="form-submit">

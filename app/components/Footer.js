@@ -80,6 +80,7 @@ export default async function Footer() {
               <li><Link href="/gallery">Gallery</Link></li>
               <li><Link href="/contact">Contact</Link></li>
               <li><Link href="/book">Request Quote</Link></li>
+              <li><Link href="/privacy">Privacy Policy</Link></li>
             </ul>
           </div>
           <div className="footer-license">
