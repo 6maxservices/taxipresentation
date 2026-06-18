@@ -36,6 +36,11 @@ export default async function TransfersPage() {
                   <span className="route-point">{transfer.toArea}</span>
                 </div>
                 {transfer.description && <p className="transfer-desc">{transfer.description}</p>}
+                {transfer.showPrice && transfer.priceFrom != null && (
+                  <div style={{ marginTop: '1rem', fontWeight: 'bold', color: 'var(--color-azure-dark)' }}>
+                    From €{transfer.priceFrom}
+                  </div>
+                )}
               </div>
               
               <div className="transfer-action">

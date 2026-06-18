@@ -1,21 +1,15 @@
 'use client';
 import { useState } from 'react';
 import { Mail, Loader2, Check } from 'lucide-react';
-import { updateBookingStatus, logBookingAction } from './actions';
+import { logBookingAction } from './actions';
 
-export default function SendOfferForm({ booking }) {
+export default function SendCustomEmailForm({ booking }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [amount, setAmount] = useState('');
-  const [message, setMessage] = useState(`Dear ${booking.clientName}\nHello from sunny Athens 🇬🇷\n\nThank you for reaching out to me. I do this job since 2002, I have always been honest and reliable, this is why many people recommends me.\n\nRegarding your request for the ${booking.serviceType} on ${new Date(booking.date).toLocaleDateString()}, I am pleased to offer you this service for a total of €${amount}.\n\nThere is no deposit required to secure this booking. You simply pay at the end of your trip (cash or card).\n\nIf you would like to proceed, please reply to this email to confirm.`);
+  const [subject, setSubject] = useState(`Update regarding your trip in Greece - George Papatheodorou`);
+  const [message, setMessage] = useState(`Dear ${booking.clientName}\n\n`);
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
-
-  const handleAmountChange = (e) => {
-    const newAmount = e.target.value;
-    setAmount(newAmount);
-    setMessage(prev => prev.replace(/€\d*/, `€${newAmount}`));
-  };
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -23,18 +17,16 @@ export default function SendOfferForm({ booking }) {
     setError('');
 
     try {
-      const [sendResult] = await Promise.all([
-        fetch('/api/send-offer', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: booking.clientEmail,
-            subject: `Offer for your trip in Greece - George Papatheodorou`,
-            body: message,
-          }),
-        }).then(r => r.json()),
-        updateBookingStatus(booking.id, 'CONTACTED'),
-      ]);
+      const res = await fetch('/api/send-offer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: booking.clientEmail,
+          subject: subject,
+          body: message,
+        }),
+      });
+      const sendResult = await res.json();
 
       if (sendResult.error) {
         setError(sendResult.error);
@@ -43,8 +35,8 @@ export default function SendOfferForm({ booking }) {
 
       await logBookingAction(
         booking.id,
-        'OFFER_SENT',
-        `Sent offer of €${amount} via email`
+        'EMAIL_SENT',
+        `Sent custom email with subject: ${subject}`
       );
 
       setIsSent(true);
@@ -64,17 +56,17 @@ export default function SendOfferForm({ booking }) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="btn btn-primary"
+        className="btn btn-outline"
         style={{ padding: '6px 12px', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '6px' }}
       >
-        <Mail size={16} /> Create Offer
+        <Mail size={16} /> Send Custom Email
       </button>
     );
   }
 
   return (
-    <div style={{ marginTop: 'var(--space-md)', padding: 'var(--space-md)', border: '1px solid var(--color-azure)', borderRadius: '8px', backgroundColor: '#f0f7ff' }}>
-      <h4 style={{ marginBottom: 'var(--space-sm)', color: 'var(--color-azure-dark)' }}>Prepare Custom Offer</h4>
+    <div style={{ marginTop: 'var(--space-md)', padding: 'var(--space-md)', border: '1px solid #718096', borderRadius: '8px', backgroundColor: '#f7fafc' }}>
+      <h4 style={{ marginBottom: 'var(--space-sm)', color: '#2d3748' }}>Send Custom Email</h4>
 
       {isSent ? (
         <div style={{ color: '#155724', backgroundColor: '#d4edda', padding: 'var(--space-sm)', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -83,12 +75,11 @@ export default function SendOfferForm({ booking }) {
       ) : (
         <form onSubmit={handleSend}>
           <div className="form-group">
-            <label>Amount (€)</label>
+            <label>Subject</label>
             <input
-              type="number"
-              value={amount}
-              onChange={handleAmountChange}
-              placeholder="e.g. 250"
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
               required
             />
           </div>
@@ -100,7 +91,9 @@ export default function SendOfferForm({ booking }) {
               onChange={(e) => setMessage(e.target.value)}
               rows={8}
               required
+              placeholder="Write your custom message here..."
             />
+            <small style={{ color: '#718096', marginTop: '4px', display: 'block' }}>Note: The professional header and signature block will be automatically added to this message.</small>
           </div>
 
           {error && <p style={{ color: '#d00000', fontSize: '0.875rem', marginBottom: 'var(--space-sm)' }}>{error}</p>}
@@ -112,7 +105,7 @@ export default function SendOfferForm({ booking }) {
               disabled={isSending}
               style={{ flex: 1 }}
             >
-              {isSending ? <Loader2 className="animate-spin" size={18} /> : 'Send Offer Email'}
+              {isSending ? <Loader2 className="animate-spin" size={18} /> : 'Send Email'}
             </button>
             <button
               type="button"

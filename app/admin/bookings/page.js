@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import BookingStatusSelector from './BookingStatusSelector';
 import SendOfferForm from './SendOfferForm';
+import SendCustomEmailForm from './SendCustomEmailForm';
 import AddToCalendarButton from './AddToCalendarButton';
 import { Plane, Ship, MapPin } from 'lucide-react';
 
@@ -127,6 +128,7 @@ export default async function AdminBookings({ searchParams }) {
 
                 <div style={{ marginTop: 'var(--space-sm)', display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
                   <SendOfferForm booking={booking} />
+                  <SendCustomEmailForm booking={booking} />
                   <AddToCalendarButton booking={booking} />
                 </div>
 

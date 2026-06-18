@@ -134,8 +134,17 @@ export default async function TourDetail({ params }) {
           <aside className="tour-sidebar">
             <div className="booking-card">
               <div className="price-box" style={{ textAlign: 'center' }}>
-                <span className="price-value" style={{ fontSize: '1.5rem' }}>Price upon request</span>
-                <span className="price-note">Get a custom quote for your group</span>
+                {tour.showPrice && tour.priceFrom ? (
+                  <>
+                    <span className="price-value" style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>From €{tour.priceFrom}</span>
+                    <span className="price-note">Per vehicle / No deposit required</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="price-value" style={{ fontSize: '1.5rem' }}>Price upon request</span>
+                    <span className="price-note">Get a custom quote for your group</span>
+                  </>
+                )}
               </div>
               
               <Link href={`/book?type=tour&id=${tour.id}`} className="btn btn-primary book-btn">

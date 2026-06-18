@@ -63,6 +63,21 @@ export default async function Footer() {
               </a>
             )}
           </div>
+          
+          <div style={{ marginTop: '2rem' }}>
+            <a 
+              href="https://share.google/sVmobFe2oPbEBVwAv" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', backgroundColor: '#fff', padding: '10px 16px', borderRadius: '8px', textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '0.9rem', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
+            >
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png" alt="Google Logo" style={{ width: '24px', height: '24px' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                <span>Excellent 5.0/5</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: '#666' }}>Based on 33 reviews</span>
+              </div>
+            </a>
+          </div>
         </div>
         
         <div className="footer-links">
