@@ -43,32 +43,20 @@ export default function MediaLibrary() {
       const sizeMB = (file.size / 1024 / 1024).toFixed(1);
 
       try {
-        // Step 1: get a presigned PUT URL from the server
-        const presignRes = await fetch(
-          `/api/upload/presign?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type || 'image/jpeg')}`
-        );
-        if (!presignRes.ok) throw new Error('Could not get upload URL');
-        const { uploadUrl, publicUrl } = await presignRes.json();
+        const formData = new FormData();
+        formData.append('file', file);
 
-        // Step 2: PUT the file directly to R2 (no Vercel size limit)
-        const putRes = await fetch(uploadUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': file.type || 'image/jpeg' },
-          body: file,
-        });
-        if (!putRes.ok) throw new Error(`R2 rejected upload (${putRes.status})`);
-
-        // Step 3: register the URL in the database
-        const registerRes = await fetch('/api/upload/register', {
+        const uploadRes = await fetch('/api/upload', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: publicUrl, name: file.name }),
+          body: formData,
         });
-        const data = await registerRes.json();
+        
+        const data = await uploadRes.json();
+        
         if (data.success) {
           uploaded.push(data);
         } else {
-          errors.push(`${file.name}: ${data.error || 'Failed to save'}`);
+          errors.push(`${file.name}: ${data.error || 'Upload failed'}`);
         }
       } catch (err) {
         errors.push(`${file.name} (${sizeMB}MB): ${err.message || 'Upload failed'}`);
