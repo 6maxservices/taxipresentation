@@ -66,7 +66,7 @@ export default async function Footer() {
           
           <div style={{ marginTop: '2rem' }}>
             <a 
-              href="https://share.google/sVmobFe2oPbEBVwAv" 
+              href="https://www.google.com/search?sca_esv=388c3e2ad9a04a50&cs=0&sxsrf=ANbL-n5ppT5TK9WDcqI0URFMc0rsfGq1mA:1781810481925&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOXP3aQ02utrSzxiRLXHg7YfSJE-4f_T4h2RLorvVPbEI2tevL-0K8_z8ibusrA2-HFvzYjPtQZdgImqT9gdAM9HCjbQS7L6eXc1HeWbELHF88aj5DkG4Q9nSJ_8iOMcepSkzo-2RRr6fd3eQ1YxFADREmjwe&q=George+Papatheodorou+Athens+Taxi+Transfers+%26+Tours+Reviews&sa=X&ved=2ahUKEwiK0dOmwZGVAxUCRvEDHXBDJuIQ0bkNegQIJBAF&biw=1920&bih=919&dpr=1" 
               target="_blank" 
               rel="noopener noreferrer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', backgroundColor: '#fff', padding: '10px 16px', borderRadius: '8px', textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '0.9rem', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
