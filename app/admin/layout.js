@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import GlobalSendEmailModal from './GlobalSendEmailModal';
 import './admin.css';
 
 export default function AdminLayout({ children }) {
@@ -40,9 +41,12 @@ export default function AdminLayout({ children }) {
               Settings
             </Link>
           </div>
-          <button onClick={() => signOut({ callbackUrl: '/' })} className="btn-logout">
-            Logout
-          </button>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <GlobalSendEmailModal />
+            <button onClick={() => signOut({ callbackUrl: '/' })} className="btn-logout">
+              Logout
+            </button>
+          </div>
         </div>
       </div>
       <div className="admin-content">
