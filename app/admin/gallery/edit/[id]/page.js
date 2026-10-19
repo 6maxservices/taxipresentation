@@ -2,6 +2,8 @@ import AlbumForm from '../../AlbumForm';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default async function EditAlbumPage({ params }) {
   const { id } = params;
   

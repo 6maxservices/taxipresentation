@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import TransferForm from '../../TransferForm';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Edit Transfer | Admin',
 };

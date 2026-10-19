@@ -4,6 +4,8 @@ import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import path from 'path';
 import { unlink } from 'fs/promises';
 
+export const dynamic = 'force-dynamic';
+
 const s3Client = process.env.R2_ACCESS_KEY_ID ? new S3Client({
   region: "auto",
   endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,

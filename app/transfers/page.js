@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import './transfers.css';
 
+export const dynamic = 'force-dynamic';
+
 async function getTransfers() {
   return await prisma.transfer.findMany({
     where: { isActive: true },

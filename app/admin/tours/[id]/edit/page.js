@@ -2,6 +2,8 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import TourForm from '../../TourForm';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Edit Tour | Admin',
 };

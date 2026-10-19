@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import './page.css';
 
+export const dynamic = 'force-dynamic';
+
 async function getFeaturedTours() {
   return await prisma.tour.findMany({
     where: { isActive: true },
